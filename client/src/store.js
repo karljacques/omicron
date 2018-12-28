@@ -5,12 +5,30 @@ Vue.use(Vuex);
 
 // Import modules
 import navigation from './store/navigation';
+import vessel from './store/vessel';
 
-export default new Vuex.Store({
-    state: {},
-    mutations: {},
-    actions: {},
+const store = new Vuex.Store({
+    state: {
+        now: new Date
+    },
+    mutations: {
+        updateTime(state) {
+            state.now = new Date
+        }
+    },
+    actions: {
+        start({commit}) {
+            setInterval(() => {
+                commit('updateTime')
+            }, 100);
+        }
+    },
     modules: {
-        navigation
+        navigation,
+        vessel
     }
-})
+});
+
+export default store;
+
+

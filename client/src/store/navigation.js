@@ -14,17 +14,13 @@ export default {
         }
     },
     actions: {
-        moveUp({commit}) {
-            commit('move', {x: 0, y: 1});
-        },
-        moveDown({commit}) {
-            commit('move', {x: 0, y: -1});
-        },
-        moveLeft({commit}) {
-            commit('move', {x: -1, y: 0});
-        },
-        moveRight({commit}) {
-            commit('move', {x: 1, y: 0});
+        move({commit, rootGetters}, payload) {
+            let canJump = rootGetters['vessel/canJump'];
+
+            if (canJump) {
+                commit('move', payload);
+                commit('vessel/jump', null, {root: true});
+            }
         }
     },
     getters: {
