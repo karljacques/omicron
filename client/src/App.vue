@@ -13,9 +13,11 @@
             <v-layout>
                 <v-flex xs3>
                     <grid/>
-                    <position-details/>
+                    <status/>
                 </v-flex>
                 <v-flex xs6>
+                    <alerts></alerts>
+                    <sector-information></sector-information>
                     <router-view/>
                 </v-flex>
                 <v-flex xs3></v-flex>
@@ -30,10 +32,12 @@
 <script>
 
 import Grid from "./components/game/navigation/movement/Grid";
-import PositionDetails from "./components/game/navigation/movement/PositionDetails";
+import Status from "./components/game/vessel/Status";
+import Alerts from "./components/game/general/Alerts";
+import SectorInformation from "./components/game/navigation/movement/SectorInformation";
 export default {
   name: 'App',
-    components: {PositionDetails, Grid},
+    components: {SectorInformation, Alerts, Status, Grid},
     data () {
     return {
       //

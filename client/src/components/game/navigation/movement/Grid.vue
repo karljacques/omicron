@@ -4,7 +4,7 @@
             <tr>
                 <td></td>
                 <td>
-                    <v-icon v-if="upMoveExists" lass="arrow" @click="move({x: 0, y: 1})">keyboard_arrow_up
+                    <v-icon v-if="upMoveExists" class="arrow" @click="move({x: 0, y: 1})">keyboard_arrow_up
                     </v-icon>
                 </td>
                 <td></td>
@@ -80,7 +80,7 @@
         cursor: pointer;
     }
 
-    .arrow {
+    .arrow, .navigation-grid {
         user-select: none;
     }
 
