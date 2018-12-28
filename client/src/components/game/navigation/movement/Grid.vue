@@ -1,5 +1,5 @@
 <template>
-    <table class="navigation-grid">
+    <table class="navigation-grid" :class="{'disabled' : !$store.getters['vessel/canJump']}">
         <tr>
             <td></td>
             <td>
@@ -54,6 +54,10 @@
     .navigation-grid td {
         margin:0 auto;
         text-align: center;
+    }
+
+    .navigation-grid.disabled .arrow, .arrow.disabled {
+        color: #696969;
     }
 
 </style>
