@@ -15,11 +15,11 @@ export default {
     },
     actions: {
         move({commit, rootGetters}, payload) {
-            let canJump = rootGetters['vessel/canJump'];
+            let canJump = rootGetters['vessel/engine/canJump'];
 
             if (canJump) {
                 commit('move', payload);
-                commit('vessel/jump', null, {root: true});
+                commit('vessel/engine/jump', null, {root: true});
             }
         }
     },
@@ -27,7 +27,7 @@ export default {
         system(state) {
             return {
                 id: state.systemId,
-                name: 'null'
+                name: 'Alpha Centari'
             }
         },
         position(state) {

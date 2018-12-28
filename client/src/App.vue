@@ -9,9 +9,20 @@
     </v-toolbar>
 
     <v-content>
-        <grid/>
-        <position-details/>
-      <router-view/>
+        <v-container fluid>
+            <v-layout>
+                <v-flex xs3>
+                    <grid/>
+                    <position-details/>
+                </v-flex>
+                <v-flex xs6>
+                    <router-view/>
+                </v-flex>
+                <v-flex xs3></v-flex>
+            </v-layout>
+        </v-container>
+
+
     </v-content>
   </v-app>
 </template>
