@@ -1,7 +1,7 @@
 <template>
     <table class="minimap-grid">
         <tr v-for="(row, index) in rows" :key="index">
-            <td v-for="(sector, index) in row" :style="'background-color: ' + sector.sectorType.color" :key="index">
+            <td v-for="(sector, index) in row" :style="'background-color: ' + getSectorColor(sector)" :key="index">
                 {{ sector.letter }}
             </td>
         </tr>
@@ -56,6 +56,13 @@
                 }
 
                 return '';
+            },
+            getSectorColor(sector) {
+                if (sector.sector.position.x <= 0 || sector.sector.position.y <= 0) {
+                    return '#333';
+                }
+
+                return sector.sectorType.color;
             }
         }
     }
@@ -65,5 +72,7 @@
     .minimap-grid td {
         width:30px;
         height:30px;
+
+        text-align: center;
     }
 </style>
