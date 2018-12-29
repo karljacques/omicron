@@ -2,7 +2,7 @@
     <table class="minimap-grid">
         <tr v-for="(row, index) in rows" :key="index">
             <td v-for="(sector, index) in row" :style="'background-color: ' + sector.sectorType.color" :key="index">
-                {{ index }}P
+                {{ sector.letter }}
             </td>
         </tr>
     </table>
@@ -33,7 +33,8 @@
                        let sector = this.$store.getters['navigation/system/sector']({x, y});
                        grid[4-relativeY][relativeX] = {
                            sector,
-                           sectorType: this.$store.getters['navigation/system/sectorType'](sector.type)
+                           sectorType: this.$store.getters['navigation/system/sectorType'](sector.type),
+                           letter: this.getSectorLetter(x,y)
                        };
                    }
                }
@@ -42,8 +43,20 @@
             },
             ...mapGetters({
                 system: 'navigation/system',
-                position: 'navigation/position'
+                position: 'navigation/position',
+                jumpNodes: 'navigation/system/jumpNodes'
             })
+        },
+        methods: {
+            getSectorLetter(x, y) {
+                let node = this.jumpNodes.find(n => n.position.x === x && n.position.y === y);
+
+                if (node) {
+                    return 'N';
+                }
+
+                return '';
+            }
         }
     }
 </script>

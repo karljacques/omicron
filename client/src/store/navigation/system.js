@@ -65,6 +65,9 @@ export default {
         },
         sectorType: (state, getters, rootState) => sectorTypeId => {
             return rootState.navigation.sectorTypes.types.find(x => x.id === sectorTypeId);
+        },
+        jumpNodes(state){
+            return state.jumpNodes;
         }
     }
 }
