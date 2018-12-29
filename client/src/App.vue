@@ -16,11 +16,28 @@
                     <status/>
                 </v-flex>
                 <v-flex xs6>
-                    <alerts></alerts>
-                    <sector-information></sector-information>
-                    <router-view/>
+                    <v-container grid-list-md>
+                        <v-layout>
+                            <v-flex xs12>
+                                <alerts></alerts>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout>
+                            <v-flex xs6>
+                                <sector-information></sector-information>
+                            </v-flex>
+                        </v-layout>
+                        <v-layout>
+                            <v-flex xs12>
+                                <router-view/>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+
                 </v-flex>
-                <v-flex xs3></v-flex>
+                <v-flex xs3>
+                    <mini-map></mini-map>
+                </v-flex>
             </v-layout>
         </v-container>
 
@@ -35,9 +52,10 @@ import Grid from "./components/game/navigation/movement/Grid";
 import Status from "./components/game/vessel/Status";
 import Alerts from "./components/game/general/Alerts";
 import SectorInformation from "./components/game/navigation/movement/SectorInformation";
+import MiniMap from "./components/game/navigation/movement/MiniMap";
 export default {
   name: 'App',
-    components: {SectorInformation, Alerts, Status, Grid},
+    components: {MiniMap, SectorInformation, Alerts, Status, Grid},
     data () {
     return {
       //

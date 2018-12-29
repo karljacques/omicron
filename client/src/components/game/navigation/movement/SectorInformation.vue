@@ -1,14 +1,17 @@
 <template>
     <div>
-        <img class="sector-image" :src="sectorType.img">
+        <v-card>
+            <v-img class="sector-image" :src="sectorType.img"></v-img>
+            <v-card-title primary-title>
+                <div>
+                    <h3>{{ sectorType.name }}</h3>
+                    <p>Move Cost: {{ sectorType.moveCost }}</p>
 
-        <h2>{{ sectorType.name }}</h2>
-        <p>Move Cost: {{ sectorType.moveCost }}</p>
-
-
-
-        <h3>({{ system.id }}) {{ system.name }}</h3>
-        <p>Sector {{ position.x }}.{{ position.y }}</p>
+                    <h4>({{ system.id }}) {{ system.name }}</h4>
+                    <p>Sector {{ position.x }}.{{ position.y }}</p>
+                </div>
+            </v-card-title>
+        </v-card>
     </div>
 </template>
 
@@ -31,13 +34,7 @@
 
 <style scoped>
     .sector-image {
-        width: 150px;
-        height: 150px;
+        height: 75px;
         object-fit: cover;
-        border: 1px solid grey;
-        position: relative;
-        right: 0;
-        top: 0;
-        float: right;
     }
 </style>

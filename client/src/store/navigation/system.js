@@ -27,6 +27,23 @@ export default {
         ]
     },
     getters: {
+        sector: state => position => {
+            let sector = state.sectors.find(x => x.position.x === position.x && x.position.y === position.y);
 
+            if (sector) {
+                return sector;
+            }
+
+            return {
+                position: {
+                    x: position.x,
+                    y: position.y
+                },
+                type: 1
+            }
+        },
+        sectorType: (state, getters, rootState) => sectorTypeId => {
+            return rootState.navigation.sectorTypes.types.find(x => x.id === sectorTypeId);
+        }
     }
 }

@@ -32,25 +32,13 @@ export default {
         system(state) {
             return state.system;
         },
-        sector(state) {
+        sector(state, getters, rootState, rootGetters) {
             let position = state.position;
 
-            let sector = state.system.sectors.find(x => x.position.x === position.x && x.position.y === position.y);
-
-            if (sector) {
-                return sector;
-            }
-
-            return {
-                position: {
-                    x: position.x,
-                    y: position.y
-                },
-                type: 1
-            }
+            return rootGetters['navigation/system/sector'](position);
         },
-        sectorType(state, getters) {
-            return state.sectorTypes.types.find(x => x.id === getters.sector.type);
+        sectorType(state, getters, rootState, rootGetters) {
+            return rootGetters['navigation/system/sectorType'](getters.sector.type);
         }
     },
     modules: {
