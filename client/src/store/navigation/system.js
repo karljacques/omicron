@@ -23,6 +23,27 @@ export default {
                     y: 1
                 },
                 type: 2
+            },
+            {
+                position: {
+                    x: 1,
+                    y: 1
+                },
+                type: 2
+            },
+            {
+                position: {
+                    x: 2,
+                    y: 1
+                },
+                type: 2
+            },
+            {
+                position: {
+                    x: 1,
+                    y: 2
+                },
+                type: 3
             }
         ]
     },
