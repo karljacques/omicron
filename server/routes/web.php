@@ -15,3 +15,7 @@ Route::get('/', function () {
     DB::connection()->getPdo();
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
