@@ -4,9 +4,9 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAvailableShipsTable extends Migration
+class CreateShipTypesTable extends Migration
 {
-    const TABLE_NAME = 'available_ships';
+    const TABLE_NAME = 'ship_types';
     /**
      * Run the migrations.
      *
