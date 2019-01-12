@@ -28,7 +28,9 @@ class CreateShipsTable extends Migration
 
             $table->unsignedInteger('position_x');
             $table->unsignedInteger('position_y');
-            $table->unsignedInteger('system');
+
+            $table->unsignedInteger('system_id');
+            $table->foreign('system_id')->references('id')->on('systems');
         });
     }
 

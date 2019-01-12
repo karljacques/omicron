@@ -18,7 +18,7 @@ $suffix = [
 
 $factory->define(App\ShipType::class, function (Faker\Generator $faker) use ($suffix) {
     return [
-        'name' => ucwords("{$faker->domainWord} {$faker->randomElement($suffix)}")
+        'name' => ucwords("{$faker->unique()->domainWord} {$faker->randomElement($suffix)}")
     ];
 });
 
