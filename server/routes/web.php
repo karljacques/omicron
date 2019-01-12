@@ -12,7 +12,6 @@
 */
 
 Route::get('/', function () {
-    DB::connection()->getPdo();
     return view('welcome');
 });
 

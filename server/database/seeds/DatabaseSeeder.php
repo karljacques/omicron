@@ -16,6 +16,11 @@ class DatabaseSeeder extends Seeder
         $ship_types = factory(App\ShipType::class, 10)->create();
         $users = factory(App\User::class, 25)->create();
 
+        $users->push(factory(App\User::class)->create([
+            'email' => 'test@omicron.net',
+            'name' => 'Test Account'
+        ]));
+
         // Create Systems
         $systems = factory(App\System::class, 5)->create();
 
