@@ -28,11 +28,9 @@ class LoginController extends Controller
             $auth = true; // Success
         }
 
-        if ($request->ajax()) {
-            return response()->json([
-                'auth' => $auth,
-                'intended' => URL::previous()
-            ]);
-        }
+        return response()->json([
+            'auth' => $auth,
+            'intended' => URL::previous()
+        ]);
     }
 }
