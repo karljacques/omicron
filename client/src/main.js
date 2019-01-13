@@ -7,7 +7,7 @@ import Vuetify from 'vuetify'
 
 Vue.config.productionTip = false;
 
-// store.dispatch('start');
+store.dispatch('start');
 
 Vue.use(Vuetify, {
     theme: {
