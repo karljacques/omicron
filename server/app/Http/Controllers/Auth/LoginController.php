@@ -9,15 +9,16 @@ use Illuminate\Support\Facades\URL;
 
 class LoginController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
+//    /**
+//        This section prevents logged in users accessing this controller
+//     * Create a new controller instance.
+//     *
+//     * @return void
+//     */
+//    public function __construct()
+//    {
+//        $this->middleware('guest')->except('logout');
+//    }
 
     public function postLogin(Request $request)
     {
@@ -31,6 +32,12 @@ class LoginController extends Controller
         return response()->json([
             'auth' => $auth,
             'intended' => URL::previous()
+        ]);
+    }
+
+    public function checkAuthenticationStatus() {
+        return response()->json([
+            'auth' => Auth::check()
         ]);
     }
 }

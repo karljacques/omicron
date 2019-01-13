@@ -6,26 +6,28 @@ Vue.use(Vuex);
 // Import modules
 import navigation from './store/navigation';
 import vessel from './store/vessel';
+import user from './store/user';
 
 const store = new Vuex.Store({
-    state: {
-        now: new Date
-    },
-    mutations: {
-        updateTime(state) {
-            state.now = new Date
-        }
-    },
-    actions: {
-        start({commit}) {
-            setInterval(() => {
-                commit('updateTime')
-            }, 100);
-        }
-    },
+    // state: {
+    //     now: new Date
+    // },
+    // mutations: {
+    //     updateTime(state) {
+    //         state.now = new Date
+    //     }
+    // },
+    // actions: {
+    //     start({commit}) {
+    //         setInterval(() => {
+    //             commit('updateTime')
+    //         }, 100);
+    //     }
+    // },
     modules: {
         navigation,
-        vessel
+        vessel,
+        user
     }
 });
 
