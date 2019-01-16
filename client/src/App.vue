@@ -75,6 +75,7 @@
     import Alerts from "./components/game/general/Alerts";
     import SectorInformation from "./components/game/navigation/movement/SectorInformation";
     import MiniMap from "./components/game/navigation/movement/MiniMap";
+    import {EventBus} from "./eventBus";
 
     export default {
         name: 'App',
@@ -91,6 +92,10 @@
         created() {
             this.$store.dispatch('user/checkAuthenticationState').then(authenticated => {
                 this.modals.showLoginModal = !authenticated;
+
+                if (authenticated) {
+                    EventBus.$emit('authentication-success');
+                }
             })
         },
         methods: {
@@ -101,6 +106,10 @@
                 })
                     .then(authenticated => {
                         this.modals.showLoginModal = !authenticated;
+
+                        if (authenticated) {
+                            EventBus.$emit('authentication-success');
+                        }
                     });
             }
         }

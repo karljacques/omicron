@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Ship extends Model
 {
     public $timestamps = false;
+
+    public function system() {
+        return $this->belongsTo(System::class);
+    }
 }

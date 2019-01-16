@@ -7,6 +7,7 @@ Vue.use(Vuex);
 import navigation from './store/navigation';
 import vessel from './store/vessel';
 import user from './store/user';
+import network from './network';
 
 const store = new Vuex.Store({
     state: {
@@ -18,7 +19,7 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        start({commit, state}) {
+        start({state}) {
             setInterval(() => {
                 // I modify this directly from the action as using a mutation
                 // fills up the vuex devtool tab
@@ -26,6 +27,23 @@ const store = new Vuex.Store({
 
                 //state.now = new Date
             }, 100);
+        },
+        fetchInitialState({commit}) {
+            return network.get('/fetchInitialState').then(response => {
+                const data = response.data;
+
+                const position = {
+                    system_id: data.ship.system_id,
+                    x: data.ship.position_x,
+                    y: data.ship.position_y
+                };
+
+                const system = response.data.system;
+
+                commit('navigation/setPosition', position);
+                commit('navigation/system/set', system);
+
+            });
         }
     },
     getters: {

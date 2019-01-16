@@ -13,6 +13,9 @@ export default {
         move(state, {x, y}) {
             state.position.x += x;
             state.position.y += y;
+        },
+        setPosition(state, {x,y}) {
+            state.position = {x,y};
         }
     },
     actions: {
@@ -38,7 +41,7 @@ export default {
             return rootGetters['navigation/system/sector'](position);
         },
         sectorType(state, getters, rootState, rootGetters) {
-            return rootGetters['navigation/system/sectorType'](getters.sector.type);
+            return rootGetters['navigation/system/sectorType'](getters.sector.sector_type_id);
         }
     },
     modules: {

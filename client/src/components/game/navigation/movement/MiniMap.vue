@@ -31,9 +31,10 @@
                        let y = relativeY + this.position.y - 2;
 
                        let sector = this.$store.getters['navigation/system/sector']({x, y});
+
                        grid[4-relativeY][relativeX] = {
                            sector,
-                           sectorType: this.$store.getters['navigation/system/sectorType'](sector.type),
+                           sectorType: this.$store.getters['navigation/system/sectorType'](sector.sector_type_id),
                            letter: this.getSectorLetter(x,y)
                        };
                    }
@@ -58,7 +59,7 @@
                 return '';
             },
             getSectorColor(sector) {
-                if (sector.sector.position.x <= 0 || sector.sector.position.y <= 0) {
+                if (sector.sector.x <= 0 || sector.sector.y <= 0) {
                     return '#333';
                 }
 

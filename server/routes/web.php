@@ -13,3 +13,6 @@
 
 Route::post('login', 'Auth\LoginController@postLogin');
 Route::get('loginCheck', 'Auth\LoginController@checkAuthenticationStatus');
+
+// Game routes
+Route::get('/fetchInitialState', 'InitialisationController@initialState');
