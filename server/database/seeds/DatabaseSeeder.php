@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
 
             do {
                 $destination_system = $faker->randomElement($systems);
-            } while ($source_system !== $destination_system);
+            } while ($source_system === $destination_system);
 
             $jump_node = new App\JumpNode([
                 'source_system_id' => $source_system->id,

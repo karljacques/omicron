@@ -12,6 +12,16 @@
                 </div>
             </v-card-title>
         </v-card>
+        <v-card v-if="jumpNodeInSector">
+            <v-card-title primary-title>
+                <div>
+                    <h3>Jump Node</h3>
+                    <p>Destination: {{ jumpNodeInSector.destination_system_id }}.{{ jumpNodeInSector.destination_x }}.{{ jumpNodeInSector.destination_y }}</p>
+                    <v-btn color="primary" outline>Jump</v-btn>
+
+                </div>
+            </v-card-title>
+        </v-card>
     </div>
 </template>
 
@@ -25,8 +35,12 @@
                 sector: 'navigation/sector',
                 sectorType: 'navigation/sectorType',
                 system: 'navigation/system',
-                position: 'navigation/position'
-            })
+                position: 'navigation/position',
+                jumpNodes: 'navigation/system/jumpNodes'
+            }),
+            jumpNodeInSector() {
+                return this.jumpNodes.find(x => x.source_x === this.position.x && x.source_y === this.position.y);
+            }
         }
 
     }
