@@ -1,6 +1,8 @@
 import system from './navigation/system';
 import sectorTypes from './navigation/sectorTypes';
 
+import network from '../network';
+
 export default {
     namespaced: true,
     state: {
@@ -19,12 +21,19 @@ export default {
         }
     },
     actions: {
-        move({commit, rootGetters, getters}, payload) {
+        move({commit, rootGetters, getters}, {x,y}) {
             let canJump = rootGetters['vessel/engine/canJump'];
 
             if (canJump) {
-                commit('vessel/engine/jump', {fuelCost: getters.sectorType.moveCost}, {root: true});
-                commit('move', payload);
+                network.post('move', {x,y}).then(response => {
+                    if (response.data.success) {
+                        commit('vessel/engine/jump', {fuelCost: getters.sectorType.moveCost}, {root: true});
+                        commit('move', {x,y});
+                    } else {
+                        console.error('Unable to jump to co-ordinates');
+                    }
+                })
+
             }
         }
     },

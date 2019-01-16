@@ -16,3 +16,6 @@ Route::get('loginCheck', 'Auth\LoginController@checkAuthenticationStatus');
 
 // Game routes
 Route::get('/fetchInitialState', 'InitialisationController@initialState');
+
+// Navigation
+Route::post('/move', 'PositionController@move');
