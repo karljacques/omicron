@@ -12,7 +12,6 @@ class InitialisationController extends Controller
 {
     public function initialState() {
         // Current user
-        /* @var $user \App\User */
         $user = Auth::user();
 
         // Get ship

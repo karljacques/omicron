@@ -31,6 +31,8 @@ class CreateShipsTable extends Migration
 
             $table->unsignedInteger('system_id');
             $table->foreign('system_id')->references('id')->on('systems');
+
+            $table->unsignedInteger('fuel');
         });
     }
 

@@ -54,7 +54,8 @@ class DatabaseSeeder extends Seeder
                 'ship_type_id' => $faker->randomElement($ship_types->pluck('id')->all()),
                 'system_id' => $system->id,
                 'position_x' => $faker->numberBetween(1, $system->size_x),
-                'position_y' => $faker->numberBetween(1, $system->size_y)
+                'position_y' => $faker->numberBetween(1, $system->size_y),
+                'fuel' => 1250
             ]);
             $ship->save();
 
