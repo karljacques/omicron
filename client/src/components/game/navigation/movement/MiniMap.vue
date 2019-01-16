@@ -14,33 +14,31 @@
     export default {
         name: "MiniMap",
         data() {
-            return {
-
-            }
+            return {}
         },
         computed: {
             rows() {
 
                 let grid = [];
 
-               for (let relativeY = 0; relativeY < 5; relativeY++) {
-                   grid[4-relativeY] = [];
+                for (let relativeY = 0; relativeY < 5; relativeY++) {
+                    grid[4 - relativeY] = [];
 
-                   for (let relativeX = 0; relativeX < 5; relativeX++ ) {
-                       let x = relativeX + this.position.x - 2;
-                       let y = relativeY + this.position.y - 2;
+                    for (let relativeX = 0; relativeX < 5; relativeX++) {
+                        let x = relativeX + this.position.x - 2;
+                        let y = relativeY + this.position.y - 2;
 
-                       let sector = this.$store.getters['navigation/system/sector']({x, y});
+                        let sector = this.$store.getters['navigation/system/sector']({x, y});
 
-                       grid[4-relativeY][relativeX] = {
-                           sector,
-                           sectorType: this.$store.getters['navigation/system/sectorType'](sector.sector_type_id),
-                           letter: this.getSectorLetter(x,y)
-                       };
-                   }
-               }
+                        grid[4 - relativeY][relativeX] = {
+                            sector,
+                            sectorType: this.$store.getters['navigation/system/sectorType'](sector.sector_type_id),
+                            letter: this.getSectorLetter(x, y)
+                        };
+                    }
+                }
 
-               return grid;
+                return grid;
             },
             ...mapGetters({
                 system: 'navigation/system',
@@ -50,7 +48,7 @@
         },
         methods: {
             getSectorLetter(x, y) {
-                let node = this.jumpNodes.find(n => n.position.x === x && n.position.y === y);
+                let node = this.jumpNodes.find(n => n.source_x === x && n.source_y === y);
 
                 if (node) {
                     return 'N';
@@ -71,8 +69,8 @@
 
 <style scoped>
     .minimap-grid td {
-        width:30px;
-        height:30px;
+        width: 30px;
+        height: 30px;
 
         text-align: center;
     }

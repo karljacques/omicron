@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 
+use App\JumpNode;
 use App\Ship;
 use App\System;
 use Illuminate\Support\Facades\Auth;
@@ -22,10 +23,12 @@ class InitialisationController extends Controller
         $system = clone $ship->system;
         $system->sectors;
 
+        $jump_nodes = JumpNode::where('source_system_id', $system->id)->get();
 
         return response()->json([
             'ship' => $ship,
-            'system' => $system
+            'system' => $system,
+            'jump_nodes' => $jump_nodes
 //            'system' => $system
         ]);
     }

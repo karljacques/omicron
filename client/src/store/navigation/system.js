@@ -31,12 +31,17 @@ export default {
         }
     },
     mutations: {
-        set(state, {id, name, sectors, size_x, size_y}) {
-            state.id = id;
-            state.name = name;
-            state.sectors = sectors;
-            state.size_x = size_x;
-            state.size_y = size_y;
-        }
+        set(state, {system, nodes}) {
+            state.id = system.id;
+            state.name = system.name;
+            state.sectors = system.sectors;
+            state.size_x = system.size_x;
+            state.size_y = system.size_y;
+
+            state.jumpNodes = nodes;
+
+
+        },
+
     }
 }

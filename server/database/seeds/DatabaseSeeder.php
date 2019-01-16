@@ -60,5 +60,26 @@ class DatabaseSeeder extends Seeder
             $ship->save();
 
         });
+
+        $jump_node_count = $faker->numberBetween($systems->count(), $systems->count() + 5);
+
+        for ($i = 0; $i < $jump_node_count; $i++ ) {
+            $source_system = $faker->randomElement($systems);
+
+            do {
+                $destination_system = $faker->randomElement($systems);
+            } while ($source_system !== $destination_system);
+
+            $jump_node = new App\JumpNode([
+                'source_system_id' => $source_system->id,
+                'source_x' => $faker->numberBetween(1, $source_system->size_x),
+                'source_y' => $faker->numberBetween(1, $source_system->size_y),
+                'destination_system_id' => $destination_system->id,
+                'destination_x' => $faker->numberBetween(1, $destination_system->size_x),
+                'destination_y' => $faker->numberBetween(1, $destination_system->size_y),
+            ]);
+
+            $jump_node->save();
+        }
     }
 }

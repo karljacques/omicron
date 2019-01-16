@@ -39,10 +39,10 @@ const store = new Vuex.Store({
                 };
 
                 const system = response.data.system;
+                const nodes = response.data.jump_nodes;
 
                 commit('navigation/setPosition', position);
-                commit('navigation/system/set', system);
-
+                commit('navigation/system/set', {system, nodes});
             });
         }
     },
