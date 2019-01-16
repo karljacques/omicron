@@ -55,8 +55,12 @@
             })
         },
         computed: {
+            ...mapGetters({
+                system: 'navigation/system',
+                position: 'navigation/position'
+            }),
             upMoveExists() {
-                return true;
+                return this.system.size_y > this.position.y;
             },
             downMoveExists() {
                 return this.$store.getters['navigation/position'].y > 1;
@@ -65,7 +69,7 @@
                 return this.$store.getters['navigation/position'].x > 1;
             },
             rightMoveExists() {
-                return true;
+                return this.system.size_x > this.position.x;
             },
             ...mapGetters({
                 canJump: 'vessel/engine/canJump',
