@@ -21,13 +21,13 @@ export default {
         }
     },
     actions: {
-        move({commit, rootGetters, getters}, {x,y}) {
+        move({commit, rootGetters}, {x,y}) {
             let canJump = rootGetters['vessel/engine/canJump'];
 
             if (canJump) {
                 network.post('move', {x,y}).then(response => {
                     if (response.data.success) {
-                        commit('vessel/engine/jump', {fuelCost: getters.sectorType.moveCost}, {root: true});
+                        commit('vessel/engine/jump', {fuel: response.data.ship.fuel}, {root: true});
                         commit('move', {x,y});
                     } else {
                         console.error('Unable to jump to co-ordinates');

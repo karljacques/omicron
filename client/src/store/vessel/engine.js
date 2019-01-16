@@ -36,13 +36,9 @@ export default {
         }
     },
     mutations: {
-        jump(state, {fuelCost}) {
+        jump(state, {fuel}) {
             state.lastJumpTime = (new Date()).getTime();
-            state.fuel -= fuelCost;
-
-            if (state.fuel < 0) {
-                state.fuel = 0;
-            }
+            state.fuel = fuel;
         }
     }
 }

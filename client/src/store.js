@@ -43,6 +43,8 @@ const store = new Vuex.Store({
 
                 commit('navigation/setPosition', position);
                 commit('navigation/system/set', {system, nodes});
+
+                commit('vessel/engine/jump', {fuel: response.data.ship.fuel}, {root: true});
             });
         }
     },

@@ -61,7 +61,7 @@ class DatabaseSeeder extends Seeder
 
         });
 
-        $jump_node_count = $faker->numberBetween($systems->count(), $systems->count() + 5);
+        $jump_node_count = $faker->numberBetween($systems->count() * 2, ($systems->count() * 2) + 5);
 
         for ($i = 0; $i < $jump_node_count; $i++ ) {
             $source_system = $faker->randomElement($systems);
