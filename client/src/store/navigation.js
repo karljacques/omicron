@@ -12,10 +12,6 @@ export default {
         }
     },
     mutations: {
-        move(state, {x, y}) {
-            state.position.x += x;
-            state.position.y += y;
-        },
         setPosition(state, {x,y}) {
             state.position = {x,y};
         }
@@ -28,7 +24,7 @@ export default {
                 network.post('move', {x,y}).then(response => {
                     if (response.data.success) {
                         commit('vessel/engine/jump', {fuel: response.data.ship.fuel}, {root: true});
-                        commit('move', {x,y});
+                        commit('setPosition', {x: response.data.ship.position_x,y: response.data.ship.position_y});
                     } else {
                         console.error('Unable to jump to co-ordinates');
                     }
@@ -39,7 +35,7 @@ export default {
         jump({commit}, jumpNodeId) {
             network.post(`jump/${jumpNodeId}`).then(response => {
                 if (response.data.success) {
-                    commit('move', {
+                    commit('setPosition', {
                         x: response.data.ship.position_x,
                         y: response.data.ship.position_y
                     });
@@ -47,7 +43,7 @@ export default {
                     const system = response.data.system;
                     const nodes = response.data.jump_nodes;
 
-                    commit('navigation/system/set', {system, nodes});
+                    commit('navigation/system/set', {system, nodes}, {root: true});
                 }
             });
         }

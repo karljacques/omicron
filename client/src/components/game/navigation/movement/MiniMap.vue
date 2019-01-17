@@ -1,7 +1,7 @@
 <template>
     <table class="minimap-grid">
-        <tr v-for="(row, index) in rows" :key="index">
-            <td v-for="(sector, index) in row" :style="'background-color: ' + getSectorColor(sector)" :key="index">
+        <tr v-for="(row, index_y) in rows" :key="index_y">
+            <td v-for="(sector, index_x) in row" :style="'background-color: ' + getSectorColor(sector)" :key="index_x" :class="index_x == mapSize && mapSize == index_y ? 'current-location' : ''">
                 {{ sector.letter }}
             </td>
         </tr>
@@ -14,23 +14,25 @@
     export default {
         name: "MiniMap",
         data() {
-            return {}
+            return {
+                mapSize: 5
+            }
         },
         computed: {
             rows() {
 
                 let grid = [];
 
-                for (let relativeY = 0; relativeY < 5; relativeY++) {
-                    grid[4 - relativeY] = [];
+                for (let relativeY = 0; relativeY < (this.mapSize*2) + 1; relativeY++) {
+                    grid[(this.mapSize*2) - relativeY] = [];
 
-                    for (let relativeX = 0; relativeX < 5; relativeX++) {
-                        let x = relativeX + this.position.x - 2;
-                        let y = relativeY + this.position.y - 2;
+                    for (let relativeX = 0; relativeX < (this.mapSize*2) + 1; relativeX++) {
+                        let x = relativeX + this.position.x - this.mapSize;
+                        let y = relativeY + this.position.y - this.mapSize;
 
                         let sector = this.$store.getters['navigation/system/sector']({x, y});
 
-                        grid[4 - relativeY][relativeX] = {
+                        grid[(this.mapSize*2) - relativeY][relativeX] = {
                             sector,
                             sectorType: this.$store.getters['navigation/system/sectorType'](sector.sector_type_id),
                             letter: this.getSectorLetter(x, y)
@@ -73,5 +75,9 @@
         height: 30px;
 
         text-align: center;
+    }
+
+    .current-location {
+        border: 2px solid green;
     }
 </style>

@@ -32,11 +32,14 @@ class PositionController extends Controller
 
             $user->ship->save();
 
+            $system = System::find($user->ship->system_id);
+            $system->load('sectors');
+
             return response()->json([
                 'success' => true,
                 'ship' => $user->ship,
-                'system' => System::find($user->ship->system_id),
-                'nodes' => JumpNode::where('source_system_id', $user->ship->system_id)->get()]);
+                'system' => $system,
+                'jump_nodes' => JumpNode::where('source_system_id', $user->ship->system_id)->get()]);
         } else {
             return response()->json([
                 'success' => false,
