@@ -16,8 +16,9 @@
             <v-card-title primary-title>
                 <div>
                     <h3>Jump Node</h3>
-                    <p>Destination: {{ jumpNodeInSector.destination_system_id }}.{{ jumpNodeInSector.destination_x }}.{{ jumpNodeInSector.destination_y }}</p>
-                    <v-btn color="primary" outline @click="onJumpClick">Jump</v-btn>
+                    <p>Destination: {{ jumpNodeInSector.destination_system_id }}.{{ jumpNodeInSector.destination_x }}.{{
+                        jumpNodeInSector.destination_y }}</p>
+                    <v-btn :loading="jumping" color="primary" outline @click="onJumpClick">Jump</v-btn>
 
                 </div>
             </v-card-title>
@@ -30,9 +31,18 @@
 
     export default {
         name: "SectorInformation",
+        data() {
+            return {
+                jumping: false
+            }
+        },
         methods: {
             onJumpClick() {
-                this.jump(this.jumpNodeInSector.id);
+                this.jumping = true;
+
+                this.jump(this.jumpNodeInSector.id).then(() => {
+                    this.jumping = false;
+                });
             },
             ...mapActions({
                 jump: 'navigation/jump'

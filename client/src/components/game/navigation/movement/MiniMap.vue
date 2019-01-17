@@ -15,7 +15,7 @@
         name: "MiniMap",
         data() {
             return {
-                mapSize: 5
+                mapSize: 4
             }
         },
         computed: {

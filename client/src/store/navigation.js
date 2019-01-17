@@ -18,9 +18,9 @@ export default {
     },
     actions: {
         move({commit, rootGetters}, {x,y}) {
-            let canJump = rootGetters['vessel/engine/canJump'];
-
-            if (canJump) {
+            // let canJump = rootGetters['vessel/engine/canJump'];
+            //
+            // if (canJump) {
                 network.post('move', {x,y}).then(response => {
                     if (response.data.success) {
                         commit('vessel/engine/jump', {fuel: response.data.ship.fuel}, {root: true});
@@ -30,10 +30,10 @@ export default {
                     }
                 })
 
-            }
+            // }
         },
         jump({commit}, jumpNodeId) {
-            network.post(`jump/${jumpNodeId}`).then(response => {
+            return network.post(`jump/${jumpNodeId}`).then(response => {
                 if (response.data.success) {
                     commit('setPosition', {
                         x: response.data.ship.position_x,
@@ -45,6 +45,8 @@ export default {
 
                     commit('navigation/system/set', {system, nodes}, {root: true});
                 }
+
+                return;
             });
         }
     },
