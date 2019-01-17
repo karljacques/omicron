@@ -16,10 +16,8 @@ export default {
 
 
             return {
-                position: {
-                    x: position.x,
-                    y: position.y
-                },
+                x: position.x,
+                y: position.y,
                 sector_type_id: 1
             }
         },
