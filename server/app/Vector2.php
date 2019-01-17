@@ -2,7 +2,7 @@
 
 namespace App;
 
-class Vector
+class Vector2
 {
     public $x;
     public $y;
@@ -23,4 +23,12 @@ class Vector
     public function length() {
         return abs($this->x) + abs($this->y);
     }
+
+    public function equal(Vector2 $a) {
+        return $a->x === $this->x && $a->y === $this->y;
+    }
+
+//    public static function createFromNode(JumpNode $node) {
+//        return new Vector($node->source_x, $node->source_y);
+//    }
 }

@@ -17,7 +17,7 @@
                 <div>
                     <h3>Jump Node</h3>
                     <p>Destination: {{ jumpNodeInSector.destination_system_id }}.{{ jumpNodeInSector.destination_x }}.{{ jumpNodeInSector.destination_y }}</p>
-                    <v-btn color="primary" outline>Jump</v-btn>
+                    <v-btn color="primary" outline @click="onJumpClick">Jump</v-btn>
 
                 </div>
             </v-card-title>
@@ -26,10 +26,18 @@
 </template>
 
 <script>
-    import {mapGetters} from 'vuex';
+    import {mapGetters, mapActions} from 'vuex';
 
     export default {
         name: "SectorInformation",
+        methods: {
+            onJumpClick() {
+                this.jump(this.jumpNodeInSector.id);
+            },
+            ...mapActions({
+                jump: 'navigation/jump'
+            })
+        },
         computed: {
             ...mapGetters({
                 sector: 'navigation/sector',
@@ -40,7 +48,8 @@
             }),
             jumpNodeInSector() {
                 return this.jumpNodes.find(x => x.source_x === this.position.x && x.source_y === this.position.y);
-            }
+            },
+
         }
 
     }

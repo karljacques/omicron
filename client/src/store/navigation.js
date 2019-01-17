@@ -35,6 +35,21 @@ export default {
                 })
 
             }
+        },
+        jump({commit}, jumpNodeId) {
+            network.post(`jump/${jumpNodeId}`).then(response => {
+                if (response.data.success) {
+                    commit('move', {
+                        x: response.data.ship.position_x,
+                        y: response.data.ship.position_y
+                    });
+
+                    const system = response.data.system;
+                    const nodes = response.data.jump_nodes;
+
+                    commit('navigation/system/set', {system, nodes});
+                }
+            });
         }
     },
     getters: {
