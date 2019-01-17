@@ -29,7 +29,6 @@ class InitialisationController extends Controller
             'ship' => $ship,
             'system' => $system,
             'jump_nodes' => $jump_nodes
-//            'system' => $system
         ]);
     }
 }

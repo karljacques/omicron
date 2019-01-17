@@ -11,11 +11,11 @@
         <v-content v-if="$store.getters['user/isLoggedIn']">
             <v-container fluid>
                 <v-layout>
-                    <v-flex xs3>
+                    <v-flex xs1>
                         <grid/>
                         <status/>
                     </v-flex>
-                    <v-flex xs6>
+                    <v-flex xs9>
                         <v-container grid-list-md>
                             <v-layout>
                                 <v-flex xs12>
@@ -23,7 +23,7 @@
                                 </v-flex>
                             </v-layout>
                             <v-layout>
-                                <v-flex xs6>
+                                <v-flex xs12>
                                     <sector-information></sector-information>
                                 </v-flex>
                             </v-layout>
@@ -35,7 +35,7 @@
                         </v-container>
 
                     </v-flex>
-                    <v-flex xs3>
+                    <v-flex xs2>
                         <mini-map></mini-map>
                     </v-flex>
                 </v-layout>

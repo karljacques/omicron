@@ -14,14 +14,14 @@ export default {
                 name: 'Gas Cloud',
                 moveCost: 2,
                 img: './sectorTypes/gasCloud.jpg',
-                color: '#ff12ee'
+                color: '#ff1571'
             },
             {
                 id: 3,
                 name: 'Ion Storm',
                 moveCost: 3,
                 img: './sectorTypes/ionStorm.jpg',
-                color: '#30abcb'
+                color: '#0472cb'
             }
         ]
     }

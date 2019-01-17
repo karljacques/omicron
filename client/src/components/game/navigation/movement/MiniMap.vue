@@ -78,6 +78,6 @@
     }
 
     .current-location {
-        border: 2px solid green;
+        border: 2px solid rgb(255, 255, 255);
     }
 </style>

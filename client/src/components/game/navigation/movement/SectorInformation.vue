@@ -1,29 +1,38 @@
 <template>
-    <div>
-        <v-card>
-            <v-img class="sector-image" :src="sectorType.img"></v-img>
-            <v-card-title primary-title>
-                <div>
-                    <h3>{{ sectorType.name }}</h3>
-                    <p>Move Cost: {{ sectorType.moveCost }}</p>
+    <v-container>
+        <v-layout>
+            <v-flex xs2>
+                <v-card height="100%">
+                    <v-img class="sector-image" :src="sectorType.img"></v-img>
+                    <v-card-title primary-title>
+                        <div>
+                            <h3>{{ sectorType.name }}</h3>
+                            <p>Move Cost: {{ sectorType.moveCost }}</p>
 
-                    <h4>({{ system.id }}) {{ system.name }}</h4>
-                    <p>Sector {{ position.x }}.{{ position.y }}</p>
-                </div>
-            </v-card-title>
-        </v-card>
-        <v-card v-if="jumpNodeInSector">
-            <v-card-title primary-title>
-                <div>
-                    <h3>Jump Node</h3>
-                    <p>Destination: {{ jumpNodeInSector.destination_system_id }}.{{ jumpNodeInSector.destination_x }}.{{
-                        jumpNodeInSector.destination_y }}</p>
-                    <v-btn :loading="jumping" color="primary" outline @click="onJumpClick">Jump</v-btn>
+                            <h4>({{ system.id }}) {{ system.name }}</h4>
+                            <p>Sector {{ position.x }}.{{ position.y }}</p>
+                        </div>
+                    </v-card-title>
+                </v-card>
+            </v-flex>
+            <v-flex xs2>
+                <v-card v-if="jumpNodeInSector" height="100%">
+                    <v-img class="jump-node-image" src="jump_node.jpg"></v-img>
+                    <v-card-title primary-title>
+                        <div>
+                            <h3>Jump Node</h3>
+                            <p>Destination: {{ jumpNodeInSector.destination_system_id }}.{{
+                                jumpNodeInSector.destination_x
+                                }}.{{
+                                jumpNodeInSector.destination_y }}</p>
+                            <v-btn :loading="jumping" color="primary" outline @click="onJumpClick">Jump</v-btn>
 
-                </div>
-            </v-card-title>
-        </v-card>
-    </div>
+                        </div>
+                    </v-card-title>
+                </v-card>
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -67,7 +76,12 @@
 
 <style scoped>
     .sector-image {
-        height: 75px;
+        height: 200px;
+        object-fit: cover;
+    }
+
+    .jump-node-image {
+        height: 200px;
         object-fit: cover;
     }
 </style>
