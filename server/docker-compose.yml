@@ -8,13 +8,13 @@ services:
     - ./:/var/www/html
     environment:
       WEBROOT: /var/www/html/public
+      RUN_SCRIPTS: 1
   database:
-    image: mariadb
+    image: postgres
     restart: always
     ports:
-      - "3306:3306"
+    - "5432:5432"
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: game
-      MYSQL_USER: laravel
-      MYSQL_PASSWORD: secret
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: game
+      POSTGRES_USER: laravel
