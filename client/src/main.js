@@ -4,6 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Vuetify from 'vuetify'
+import {EventBus} from './eventBus';
 
 Vue.config.productionTip = false;
 
@@ -25,6 +26,11 @@ new Vue({
     router,
     store,
     render: h => h(App),
+    mounted() {
+        document.addEventListener('keyup', function (evt) {
+            EventBus.$emit('keyup', {key: evt.key});
+        });
+    }
 }).$mount('#app');
 
 import './events/AuthenticationSuccess';

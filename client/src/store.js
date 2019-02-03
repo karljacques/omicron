@@ -41,8 +41,11 @@ const store = new Vuex.Store({
                 const system = response.data.system;
                 const nodes = response.data.jump_nodes;
 
+                const planets = response.data.planets;
+                const stations = response.data.stations;
+
                 commit('navigation/setPosition', position);
-                commit('navigation/system/set', {system, nodes});
+                commit('navigation/system/set', {system, nodes, planets, stations});
 
                 commit('vessel/engine/jump', {fuel: response.data.ship.fuel}, {root: true});
             });

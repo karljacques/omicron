@@ -46,6 +46,7 @@
 
 <script>
     import {mapGetters, mapActions} from 'vuex';
+    import {EventBus} from '../../../../eventBus';
 
     export default {
         name: "Grid",
@@ -53,6 +54,25 @@
             ...mapActions({
                 move: 'navigation/move'
             })
+        },
+        mounted() {
+            EventBus.$on('keyup', ({key}) => {
+                switch (key) {
+                    case 'ArrowUp':
+                        this.move({x: 0, y: 1});
+                        break;
+                    case 'ArrowDown':
+                        this.move({x: 0, y: -1});
+                        break;
+                    case 'ArrowLeft':
+                        this.move({x: -1, y: 0});
+                        break;
+                    case 'ArrowRight':
+                        this.move({x: 1, y: 0});
+                        break;
+                }
+
+            });
         },
         computed: {
             ...mapGetters({

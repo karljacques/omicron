@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         RishiRamawat\PostgresSchema\PostgresqlSchemaServiceProvider::class,
+        App\Providers\RepositoryServiceProvider::class
     ],
 
     /*

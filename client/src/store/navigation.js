@@ -42,8 +42,10 @@ export default {
 
                     const system = response.data.system;
                     const nodes = response.data.jump_nodes;
+                    const stations = response.data.stations;
+                    const planets = response.data.planets;
 
-                    commit('navigation/system/set', {system, nodes}, {root: true});
+                    commit('navigation/system/set', {system, nodes, planets, stations}, {root: true});
                 }
 
                 return;
