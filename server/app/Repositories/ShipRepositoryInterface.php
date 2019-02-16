@@ -3,11 +3,10 @@
 namespace App\Repositories;
 
 
-use App\Sector;
-use App\Vector3;
+use App\Position;
 use Illuminate\Support\Collection;
 
 interface ShipRepositoryInterface
 {
-    public function getShipsInSector(Vector3 $sector) : Collection;
+    public function getShipsInSector(Position $position) : Collection;
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Position;
 use App\Repositories\ShipRepository;
 use App\Ship;
 use App\Station;
@@ -9,7 +10,6 @@ use App\Planet;
 use App\JumpNode;
 use App\Sector;
 use App\System;
-use App\Vector2;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,10 +25,10 @@ class PositionController extends Controller
         $user = Auth::user();
 
         // Is the user in the same sector as the JumpNode?
-        $node_vector          = $jump_node->getSourcePositionVector3();
-        $ship_position_vector = $user->ship->getPositionVector3();
+        $node_position          = $jump_node->getSourcePosition();
+        $ship_position_vector = $user->ship->getPosition();
 
-        if ($node_vector->equal($ship_position_vector)) {
+        if ($node_position->equal($ship_position_vector)) {
             // Execute the jump
             $user->ship->position_x = $jump_node->destination_x;
             $user->ship->position_y = $jump_node->destination_y;
@@ -78,16 +78,16 @@ class PositionController extends Controller
         /** @var Ship $ship */
         $ship = $user->ship;
 
-        $delta = new Vector2($request->only('x', 'y'));;
+        $delta = Position::fromArray($request->only('x', 'y'));;
 
         if ($delta->length() === 1) {
 
             // Original position
-            $original_position = $ship->getPositionVector2();
+            $original_position = $ship->getPosition();
 
             // Execute
-            $ship->position_x += $delta->x;
-            $ship->position_y += $delta->y;
+            $ship->position_x += $delta->getX();
+            $ship->position_y += $delta->getY();
 
             if ($ship->position_x <= $ship->system->size_x &&
                 $ship->position_y <= $ship->system->size_y &&
@@ -96,8 +96,8 @@ class PositionController extends Controller
 
                 // Get the current sector and calculate fuel consumption
                 $current_sector = Sector::where('system_id', $ship->system_id)
-                                        ->where('x', $original_position->x)
-                                        ->where('y', $original_position->y)->first();
+                                        ->where('x', $original_position->getX())
+                                        ->where('y', $original_position->getY())->first();
 
                 $move_cost = $current_sector->sector_type_id ?? 1;
                 // Cost is equal to sector_type_id to start with
@@ -108,7 +108,7 @@ class PositionController extends Controller
                 return response()->json(['success' => false, 'You cannot move to a position outside of system bounds']);
             }
 
-            $ships_in_sector = $ship_repository->getShipsInSector($ship->getPositionVector3());
+            $ships_in_sector = $ship_repository->getShipsInSector($ship->getPosition());
 
             return response()->json(['ship' => $ship, 'success' => true, 'ships_in_sector' => $ships_in_sector]);
         } else {
