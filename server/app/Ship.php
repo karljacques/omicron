@@ -4,6 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property mixed position_x
+ * @property mixed position_y
+ * @property mixed system_id
+ * @property mixed system
+ * @property mixed fuel
+ */
 class Ship extends Model
 {
     public $timestamps = false;
