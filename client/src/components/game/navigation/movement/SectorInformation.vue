@@ -16,20 +16,20 @@
                 </v-card>
             </v-flex>
             <v-flex xs4 v-if="jumpNodeInSector">
-            <v-card height="100%">
-                <v-img class="jump-node-image" src="jump_node.jpg"></v-img>
-                <v-card-title primary-title>
-                    <div>
-                        <h3>Jump Node</h3>
-                        <p>Destination: {{ jumpNodeInSector.destination_system_id }}.{{
-                            jumpNodeInSector.destination_x
-                            }}.{{
-                            jumpNodeInSector.destination_y }}</p>
-                        <v-btn :loading="jumping" color="primary" outline @click="onJumpClick">Jump</v-btn>
+                <v-card height="100%">
+                    <v-img class="jump-node-image" src="jump_node.jpg"></v-img>
+                    <v-card-title primary-title>
+                        <div>
+                            <h3>Jump Node</h3>
+                            <p>Destination: {{ jumpNodeInSector.destination_system_id }}.{{
+                                jumpNodeInSector.destination_x
+                                }}.{{
+                                jumpNodeInSector.destination_y }}</p>
+                            <v-btn :loading="jumping" color="primary" outline @click="onJumpClick">Jump</v-btn>
 
-                    </div>
-                </v-card-title>
-            </v-card>
+                        </div>
+                    </v-card-title>
+                </v-card>
             </v-flex>
             <v-flex xs4 v-if="planetInSector">
                 <v-card height="100%">
@@ -37,7 +37,8 @@
                     <v-card-title primary-title>
                         <div>
                             <h3>{{ planetInSector.name }}</h3>
-                            <p><b>Habitable Planet</b><br> Population: {{ planetInSector.population.toLocaleString() }}</p>
+                            <p><b>Habitable Planet</b><br> Population: {{ planetInSector.population.toLocaleString() }}
+                            </p>
                             <v-btn color="primary" outline @click="onClickDock(planetInSector.id)">Land</v-btn>
 
                         </div>
@@ -63,6 +64,7 @@
 
 <script>
     import { mapGetters, mapActions } from 'vuex';
+    import {EventBus} from '../../../../eventBus';
 
     export default {
         name:     "SectorInformation",
@@ -79,12 +81,17 @@
                     this.jumping = false;
                 });
             },
-            onClickDock(dockableId) {
-                this.dock(dockableId);
+            onClickDock (dockableId) {
+                this.dock(dockableId).then(success => {
+                    if (success) {
+                        EventBus.$emit('game.docked');
+                    }
+                });
             },
             ...mapActions({
                 jump: 'navigation/jump',
-                dock: 'navigation/dock'
+                dock: 'navigation/dock',
+                undock: 'navigation/undock'
             })
         },
         computed: {
@@ -93,6 +100,7 @@
                 sectorType: 'navigation/sectorType',
                 system:     'navigation/system',
                 position:   'navigation/position',
+                docked:     'navigation/docked'
             }),
             ...mapGetters('navigation/system', [
                 'jumpNodes',

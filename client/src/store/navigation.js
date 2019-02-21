@@ -2,6 +2,7 @@ import system from './navigation/system';
 import sectorTypes from './navigation/sectorTypes';
 
 import network from '../network';
+import { EventBus } from '../eventBus';
 
 export default {
     namespaced: true,
@@ -17,9 +18,16 @@ export default {
             state.position = { x, y };
         },
         dock (state, { dockableId }) {
+
+            if (dockableId) {
+                EventBus.$emit('game.dock');
+            }
+
             state.dockedAt = dockableId;
         },
         undock (state) {
+            EventBus.$emit('game.undock');
+
             state.dockedAt = null;
         }
     },
@@ -57,6 +65,8 @@ export default {
                     commit('dock', {
                         dockableId
                     });
+
+                    return true;
                 }
             })
         },
@@ -83,7 +93,7 @@ export default {
         sectorType (state, getters, rootState, rootGetters) {
             return rootGetters['navigation/system/sectorType'](getters.sector.sector_type_id);
         },
-        dockedAt: state => state.dockedAt
+        docked: state => state.dockedAt
     },
     modules:    {
         system,

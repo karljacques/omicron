@@ -8,6 +8,7 @@ import navigation from './store/navigation';
 import vessel from './store/vessel';
 import user from './store/user';
 import network from './network';
+import { EventBus } from './eventBus';
 
 const store = new Vuex.Store({
     state:     {
@@ -46,6 +47,7 @@ const store = new Vuex.Store({
 
                 commit('navigation/setPosition', position);
                 commit('navigation/dock', { dockableId: response.data.ship.docked_at });
+
                 commit('navigation/system/set', { system, nodes, planets, stations });
 
                 commit('vessel/engine/jump', { fuel: response.data.ship.fuel }, { root: true });

@@ -74,6 +74,18 @@
             EventBus.$on('authentication-success', () => {
                this.modals.showLoginModal = false;
             });
+
+            EventBus.$on('game.dock', () => {
+                this.$router.push({
+                    name: 'station-overview'
+                });
+            });
+
+            EventBus.$on('game.undock', () => {
+                this.$router.push({
+                    name: 'sector-overview'
+                })
+            })
         }
     }
 </script>

@@ -4,6 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router);
 
 import SectorInformation from './components/game/navigation/movement/SectorInformation';
+import StationOverview from './components/game/docked/station/StationOverview';
 
 export default new Router({
     routes: [
@@ -17,8 +18,13 @@ export default new Router({
         // }
         {
             path:      '/',
-            name:      'sector-information',
+            name:      'sector-overview',
             component: SectorInformation
+        },
+        {
+            path: '/StationOverview/',
+            name: 'station-overview',
+            component: StationOverview
         }
     ]
 })
