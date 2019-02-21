@@ -17,6 +17,7 @@ class Dockable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->unsignedInteger('system_id');
+            $table->foreign('system_id')->references('id')->on('systems');
 
             $table->unsignedInteger('position_x');
             $table->unsignedInteger('position_y');

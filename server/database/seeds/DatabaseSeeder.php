@@ -82,6 +82,7 @@ class DatabaseSeeder extends Seeder
         $users->each(function ($user) use ($faker, $ship_types, $systems) {
             $system = $faker->randomElement($systems);
             $ship   = new App\Ship([
+                                       'name'         => 'KMS '. $faker->domainWord,
                                        'user_id'      => $user->id,
                                        'ship_type_id' => $faker->randomElement($ship_types->pluck('id')->all()),
                                        'system_id'    => $system->id,

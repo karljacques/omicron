@@ -18,19 +18,13 @@ class CreateShipsTable extends Migration
     public function up()
     {
         Schema::create(self::SHIPS_TABLE, function (Blueprint $table) {
-            $table->increments('id');
+            $table->inherits('dockable');
 
             $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->on(self::USERS_TABLE);
 
             $table->unsignedInteger('ship_type_id');
             $table->foreign('ship_type_id')->references('id')->on(self::SHIP_TYPES_TABLE);
-
-            $table->unsignedInteger('position_x');
-            $table->unsignedInteger('position_y');
-
-            $table->unsignedInteger('system_id');
-            $table->foreign('system_id')->references('id')->on('systems');
 
             $table->unsignedInteger('fuel');
         });
