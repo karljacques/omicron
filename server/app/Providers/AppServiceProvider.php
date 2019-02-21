@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Game\Navigation\DockingService;
+use App\Services\Game\Navigation\DockingServiceInterface;
 use App\Services\Game\Navigation\JumpNodeTravelService;
 use App\Services\Game\Navigation\JumpNodeTravelServiceInterface;
 use App\Services\Game\Navigation\PositionService;
@@ -12,7 +14,8 @@ class AppServiceProvider extends ServiceProvider
 {
     public $bindings = [
         PositionServiceInterface::class       => PositionService::class,
-        JumpNodeTravelServiceInterface::class => JumpNodeTravelService::class
+        JumpNodeTravelServiceInterface::class => JumpNodeTravelService::class,
+        DockingServiceInterface::class        => DockingService::class
     ];
 
     /**
