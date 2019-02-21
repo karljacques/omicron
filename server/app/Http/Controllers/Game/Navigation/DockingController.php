@@ -3,9 +3,8 @@
 
 namespace App\Http\Controllers\Game\Navigation;
 
-
-use App\Dockable;
 use App\Http\Controllers\Controller;
+use App\Dockable;
 use App\Services\Game\Navigation\DockingServiceInterface;
 use Illuminate\Auth\AuthManager;
 

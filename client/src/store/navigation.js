@@ -5,34 +5,36 @@ import network from '../network';
 
 export default {
     namespaced: true,
-    state: {
+    state:      {
         position: {
             x: 1,
             y: 1
-        }
-    },
-    mutations: {
-        setPosition(state, {x,y}) {
-            state.position = {x,y};
-        }
-    },
-    actions: {
-        move({commit, rootGetters}, {x,y}) {
-            // let canJump = rootGetters['vessel/engine/canJump'];
-            //
-            // if (canJump) {
-                network.post('move', {x,y}).then(response => {
-                    if (response.data.success) {
-                        commit('vessel/engine/jump', {fuel: response.data.ship.fuel}, {root: true});
-                        commit('setPosition', {x: response.data.ship.position_x,y: response.data.ship.position_y});
-                    } else {
-                        console.error('Unable to jump to co-ordinates');
-                    }
-                })
-
-            // }
         },
-        jump({commit}, jumpNodeId) {
+        dockedAt: null
+    },
+    mutations:  {
+        setPosition (state, { x, y }) {
+            state.position = { x, y };
+        },
+        dock (state, { dockableId }) {
+            state.dockedAt = dockableId;
+        },
+        undock (state) {
+            state.dockedAt = null;
+        }
+    },
+    actions:    {
+        move ({ commit }, { x, y }) {
+            network.post('move', { x, y }).then(response => {
+                if (response.data.success) {
+                    commit('vessel/engine/jump', { fuel: response.data.ship.fuel }, { root: true });
+                    commit('setPosition', { x: response.data.ship.position_x, y: response.data.ship.position_y });
+                } else {
+                    console.error('Unable to jump to co-ordinates');
+                }
+            })
+        },
+        jump ({ commit }, jumpNodeId) {
             return network.post(`jump/${jumpNodeId}`).then(response => {
                 if (response.data.success) {
                     commit('setPosition', {
@@ -40,35 +42,50 @@ export default {
                         y: response.data.ship.position_y
                     });
 
-                    const system = response.data.system;
-                    const nodes = response.data.jump_nodes;
+                    const system   = response.data.system;
+                    const nodes    = response.data.jump_nodes;
                     const stations = response.data.stations;
-                    const planets = response.data.planets;
+                    const planets  = response.data.planets;
 
-                    commit('navigation/system/set', {system, nodes, planets, stations}, {root: true});
+                    commit('navigation/system/set', { system, nodes, planets, stations }, { root: true });
                 }
-
-                return;
             });
+        },
+        dock ({ commit }, dockableId) {
+            return network.post(`dock/${dockableId}`).then(response => {
+                if (response.data.success) {
+                    commit('dock', {
+                        dockableId
+                    });
+                }
+            })
+        },
+        undock ({ commit }) {
+            return network.post(`undock`).then(response => {
+                if (response.data.success) {
+                    commit('undock');
+                }
+            })
         }
     },
-    getters: {
-        position(state) {
+    getters:    {
+        position (state) {
             return state.position;
         },
-        system(state) {
+        system (state) {
             return state.system;
         },
-        sector(state, getters, rootState, rootGetters) {
+        sector (state, getters, rootState, rootGetters) {
             let position = state.position;
 
             return rootGetters['navigation/system/sector'](position);
         },
-        sectorType(state, getters, rootState, rootGetters) {
+        sectorType (state, getters, rootState, rootGetters) {
             return rootGetters['navigation/system/sectorType'](getters.sector.sector_type_id);
-        }
+        },
+        dockedAt: state => state.dockedAt
     },
-    modules: {
+    modules:    {
         system,
         sectorTypes
     }

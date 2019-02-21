@@ -18,8 +18,8 @@ Route::get('loginCheck', 'Auth\LoginController@checkAuthenticationStatus');
 Route::get('/fetchInitialState', 'InitialisationController@initialState');
 
 // Navigation
-Route::post('/move', 'PositionController@move');
-Route::post('/jump/{jump_node}', 'PositionController@jump');
+Route::post('/move', 'Game\Navigation\PositionController@move');
+Route::post('/jump/{jump_node}', 'Game\Navigation\PositionController@jump');
 
-Route::post('/dock/{dockable}', 'DockingController@dock');
-Route::post('/undock/', 'DockingController@undock');
+Route::post('/dock/{dockable}', 'Game\Navigation\DockingController@dock');
+Route::post('/undock/', 'Game\Navigation\DockingController@undock');

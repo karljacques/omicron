@@ -24,6 +24,8 @@
                             </v-layout>
                             <v-layout>
                                 <v-flex xs12>
+                                    DockedAt: {{ dockedAt }}
+                                    <v-btn v-if="dockedAt" @click="undock(dockedAt)">Undock</v-btn>
                                     <sector-information></sector-information>
                                 </v-flex>
                             </v-layout>
@@ -75,21 +77,25 @@
     import Alerts from "./components/game/general/Alerts";
     import SectorInformation from "./components/game/navigation/movement/SectorInformation";
     import MiniMap from "./components/game/navigation/movement/MiniMap";
-    import {EventBus} from "./eventBus";
+    import { EventBus } from "./eventBus";
+    import { mapGetters, mapActions } from 'vuex';
 
     export default {
-        name: 'App',
-        components: {MiniMap, SectorInformation, Alerts, Status, Grid},
-        data() {
+        name:       'App',
+        components: { MiniMap, SectorInformation, Alerts, Status, Grid },
+        data () {
             return {
-                modals: {
+                modals:   {
                     showLoginModal: false
                 },
-                email: '',
+                email:    '',
                 password: ''
             }
         },
-        created() {
+        computed:   {
+            ...mapGetters('navigation', ['dockedAt'])
+        },
+        created () {
             this.$store.dispatch('user/checkAuthenticationState').then(authenticated => {
                 this.modals.showLoginModal = !authenticated;
 
@@ -98,20 +104,17 @@
                 }
             });
 
-            document.addEventListener('keyup', function(e) {
-                EventBus.$emit('keyup', e.key);
-            });
-
-            EventBus.$on('keyup', (key) => {
+            EventBus.$on('keyup', ({ key }) => {
                 if (key === 'Enter' && this.modals.showLoginModal) {
                     this.attemptLogin();
                 }
             })
         },
-        methods: {
-            attemptLogin() {
+        methods:    {
+            ...mapActions('navigation', ['undock']),
+            attemptLogin () {
                 this.$store.dispatch('user/attemptLogin', {
-                    email: this.email,
+                    email:    this.email,
                     password: this.password
                 })
                     .then(authenticated => {

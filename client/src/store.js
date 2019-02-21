@@ -10,16 +10,16 @@ import user from './store/user';
 import network from './network';
 
 const store = new Vuex.Store({
-    state: {
+    state:     {
         now: new Date
     },
     mutations: {
-        updateTime(state) {
+        updateTime (state) {
             state.now = new Date
         }
     },
-    actions: {
-        start({state}) {
+    actions:   {
+        start ({ state }) {
             setInterval(() => {
                 // I modify this directly from the action as using a mutation
                 // fills up the vuex devtool tab
@@ -28,35 +28,36 @@ const store = new Vuex.Store({
                 //state.now = new Date
             }, 100);
         },
-        fetchInitialState({commit}) {
+        fetchInitialState ({ commit }) {
             return network.get('/fetchInitialState').then(response => {
                 const data = response.data;
 
                 const position = {
                     system_id: data.ship.system_id,
-                    x: data.ship.position_x,
-                    y: data.ship.position_y
+                    x:         data.ship.position_x,
+                    y:         data.ship.position_y
                 };
 
                 const system = response.data.system;
-                const nodes = response.data.jump_nodes;
+                const nodes  = response.data.jump_nodes;
 
-                const planets = response.data.planets;
+                const planets  = response.data.planets;
                 const stations = response.data.stations;
 
                 commit('navigation/setPosition', position);
-                commit('navigation/system/set', {system, nodes, planets, stations});
+                commit('navigation/dock', { dockableId: response.data.ship.docked_at });
+                commit('navigation/system/set', { system, nodes, planets, stations });
 
-                commit('vessel/engine/jump', {fuel: response.data.ship.fuel}, {root: true});
+                commit('vessel/engine/jump', { fuel: response.data.ship.fuel }, { root: true });
             });
         }
     },
-    getters: {
-        getTime(state) {
+    getters:   {
+        getTime (state) {
             return state.now.getTime();
         }
     },
-    modules: {
+    modules:   {
         navigation,
         vessel,
         user

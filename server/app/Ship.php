@@ -9,4 +9,5 @@ namespace App;
  */
 class Ship extends Dockable
 {
+    protected $table = 'ships';
 }

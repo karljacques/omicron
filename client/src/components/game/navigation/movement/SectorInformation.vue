@@ -38,7 +38,7 @@
                         <div>
                             <h3>{{ planetInSector.name }}</h3>
                             <p><b>Habitable Planet</b><br> Population: {{ planetInSector.population.toLocaleString() }}</p>
-                            <v-btn color="primary" outline>Land</v-btn>
+                            <v-btn color="primary" outline @click="onClickDock(planetInSector.id)">Land</v-btn>
 
                         </div>
                     </v-card-title>
@@ -51,7 +51,7 @@
                         <div>
                             <h3>{{ stationInSector.name }}</h3>
                             <p>Capacity: {{ stationInSector.capacity }} <br> Ships Docked: 0</p>
-                            <v-btn color="primary" outline>Dock</v-btn>
+                            <v-btn color="primary" outline @click="onClickDock(stationInSector.id)">Dock</v-btn>
 
                         </div>
                     </v-card-title>
@@ -79,8 +79,12 @@
                     this.jumping = false;
                 });
             },
+            onClickDock(dockableId) {
+                this.dock(dockableId);
+            },
             ...mapActions({
-                jump: 'navigation/jump'
+                jump: 'navigation/jump',
+                dock: 'navigation/dock'
             })
         },
         computed: {

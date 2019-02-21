@@ -15,7 +15,9 @@ class AddDockedAtColumn extends Migration
     {
         Schema::table('ships', function (Blueprint $table) {
             $table->unsignedInteger('docked_at')->nullable();
-            $table->foreign('docked_at')->references('id')->on('dockable');
+            // PostgreSQL doesn't support inheritance AND foreign key constrains
+            // it may at some point in the future
+            //$table->foreign('docked_at')->references('id')->on('dockable');
         });
     }
 

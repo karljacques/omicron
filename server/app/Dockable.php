@@ -6,7 +6,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property int   id
+ * @property int id
  * @property int position_x
  * @property int position_y
  * @property int system_id
@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
 class Dockable extends Model
 {
     public $timestamps = false;
+
+    protected $table = 'dockable';
 
     public function system()
     {

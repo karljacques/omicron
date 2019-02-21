@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Game\Navigation;
 
+use App\Http\Controllers\Controller;
 use App\Position;
 use App\Repositories\ShipRepository;
 use App\Services\Game\Navigation\JumpNodeTravelServiceInterface;
@@ -10,7 +11,6 @@ use App\Ship;
 use App\Station;
 use App\Planet;
 use App\JumpNode;
-use App\Sector;
 use App\System;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
