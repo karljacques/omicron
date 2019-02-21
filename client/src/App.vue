@@ -24,13 +24,6 @@
                             </v-layout>
                             <v-layout>
                                 <v-flex xs12>
-                                    DockedAt: {{ dockedAt }}
-                                    <v-btn v-if="dockedAt" @click="undock(dockedAt)">Undock</v-btn>
-                                    <sector-information></sector-information>
-                                </v-flex>
-                            </v-layout>
-                            <v-layout>
-                                <v-flex xs12>
                                     <router-view/>
                                 </v-flex>
                             </v-layout>
@@ -46,27 +39,7 @@
 
         </v-content>
 
-        <v-dialog :value="modals.showLoginModal" persistent max-width="600px">
-            <v-card>
-                <v-card-title>
-                    <h1>Login</h1>
-                </v-card-title>
-                <v-card-text>
-                    <v-container>
-                        <v-flex>
-                            <v-text-field v-model="email" label="Email"></v-text-field>
-                            <v-text-field v-model="password" type="password" label="Password"></v-text-field>
-                        </v-flex>
-                    </v-container>
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn flat color="primary" @click="attemptLogin">Login</v-btn>
-                </v-card-actions>
-
-            </v-card>
-
-        </v-dialog>
+        <LoginModal v-if="modals.showLoginModal"/>
     </v-app>
 </template>
 
@@ -75,25 +48,19 @@
     import Grid from "./components/game/navigation/movement/Grid";
     import Status from "./components/game/vessel/Status";
     import Alerts from "./components/game/general/Alerts";
-    import SectorInformation from "./components/game/navigation/movement/SectorInformation";
     import MiniMap from "./components/game/navigation/movement/MiniMap";
     import { EventBus } from "./eventBus";
-    import { mapGetters, mapActions } from 'vuex';
+    import LoginModal from './components/authentication/LoginModal';
 
     export default {
         name:       'App',
-        components: { MiniMap, SectorInformation, Alerts, Status, Grid },
+        components: { LoginModal, MiniMap, Alerts, Status, Grid },
         data () {
             return {
                 modals:   {
                     showLoginModal: false
-                },
-                email:    '',
-                password: ''
+                }
             }
-        },
-        computed:   {
-            ...mapGetters('navigation', ['dockedAt'])
         },
         created () {
             this.$store.dispatch('user/checkAuthenticationState').then(authenticated => {
@@ -104,27 +71,9 @@
                 }
             });
 
-            EventBus.$on('keyup', ({ key }) => {
-                if (key === 'Enter' && this.modals.showLoginModal) {
-                    this.attemptLogin();
-                }
-            })
-        },
-        methods:    {
-            ...mapActions('navigation', ['undock']),
-            attemptLogin () {
-                this.$store.dispatch('user/attemptLogin', {
-                    email:    this.email,
-                    password: this.password
-                })
-                    .then(authenticated => {
-                        this.modals.showLoginModal = !authenticated;
-
-                        if (authenticated) {
-                            EventBus.$emit('authentication-success');
-                        }
-                    });
-            }
+            EventBus.$on('authentication-success', () => {
+               this.modals.showLoginModal = false;
+            });
         }
     }
 </script>
