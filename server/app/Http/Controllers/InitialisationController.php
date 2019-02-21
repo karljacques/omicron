@@ -8,14 +8,15 @@ use App\Planet;
 use App\Ship;
 use App\Station;
 use App\System;
+use Illuminate\Auth\AuthManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class InitialisationController extends Controller
 {
-    public function initialState() {
+    public function initialState(AuthManager $auth_manager) {
         // Current user
-        $user = Auth::user();
+        $user = $auth_manager->user();
 
         // Get ship
         $ship = $user->ship;
