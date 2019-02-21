@@ -96,6 +96,16 @@
                 if (authenticated) {
                     EventBus.$emit('authentication-success');
                 }
+            });
+
+            document.addEventListener('keyup', function(e) {
+                EventBus.$emit('keyup', e.key);
+            });
+
+            EventBus.$on('keyup', (key) => {
+                if (key === 'Enter' && this.modals.showLoginModal) {
+                    this.attemptLogin();
+                }
             })
         },
         methods: {
