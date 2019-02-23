@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Dockable;
 use App\Services\Game\Navigation\DockingServiceInterface;
 
+
+use App\Http\Resources\Dockable as DockableResource;
+
 class DockingController extends Controller
 {
     protected $docking_service;
@@ -25,7 +28,8 @@ class DockingController extends Controller
 
         return response()->json(
             [
-                'success' => $success
+                'success' => $success,
+                'dockable' => new DockableResource($dockable)
             ]);
     }
 

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int position_x
  * @property int position_y
  * @property int system_id
+ * @method static find($docked_at)
  */
 class Dockable extends Model
 {

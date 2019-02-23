@@ -9,6 +9,7 @@ import vessel from './store/vessel';
 import user from './store/user';
 import sensors from './store/sensors';
 import character from './store/character';
+import dockable from './store/dockable';
 
 import network from './network';
 
@@ -35,20 +36,24 @@ const store = new Vuex.Store({
             return network.get('/fetchInitialState').then(response => {
                 const data = response.data;
 
-                const system = response.data.system;
-                const nodes  = response.data.jump_nodes;
+                const system = data.system;
+                const nodes  = data.jump_nodes;
 
-                const planets  = response.data.planets;
-                const stations = response.data.stations;
+                const planets  = data.planets;
+                const stations = data.stations;
 
-                const shipsInSector = response.data.ships_in_sector;
+                const shipsInSector = data.ships_in_sector;
 
-                const character = response.data.character;
+                const character = data.character;
 
                 commit('sensors/setShips', shipsInSector);
                 commit('navigation/set', { system, nodes, planets, stations });
-                commit('vessel/set', response.data.ship);
+                commit('vessel/set', data.ship);
                 commit('character/set', character);
+
+                if (data.dockable) {
+                    commit('dockable/set', data.dockable);
+                }
             });
         }
     },
@@ -62,7 +67,8 @@ const store = new Vuex.Store({
         vessel,
         user,
         sensors,
-        character
+        character,
+        dockable
     }
 });
 

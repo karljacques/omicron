@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Character;
+use App\Dockable;
 use App\JumpNode;
 use App\Planet;
 use App\Repositories\ShipRepository;
@@ -14,6 +15,7 @@ use App\Http\Resources\Station as StationResource;
 use App\Http\Resources\Planet as PlanetResource;
 use App\Http\Resources\JumpNode as JumpNodeResource;
 use App\Http\Resources\Character as CharacterResource;
+use App\Http\Resources\Dockable as DockableResource;
 
 class InitialisationController extends Controller
 {
@@ -29,6 +31,10 @@ class InitialisationController extends Controller
 
         $ships_in_sector = $ship_repository->getShipsInSector($ship->getPosition());
 
+        $dockable = null;
+        if ($ship->docked_at !== null) {
+            $dockable = Dockable::find($ship->docked_at);
+        }
         return response()->json(
             [
                 'ship'            => new ShipResource($ship),
@@ -37,7 +43,8 @@ class InitialisationController extends Controller
                 'planets'         => PlanetResource::collection($planets),
                 'stations'        => StationResource::collection($stations),
                 'ships_in_sector' => ShipResource::collection($ships_in_sector),
-                'character'       => new CharacterResource($character)
+                'character'       => new CharacterResource($character),
+                'dockable'        => new DockableResource($dockable)
             ]);
     }
 }
