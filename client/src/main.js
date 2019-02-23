@@ -33,4 +33,8 @@ new Vue({
     }
 }).$mount('#app');
 
+Vue.filter('currency', function(value) {
+   return '$' + (value/100.0).toFixed(2);
+});
+
 import './events/AuthenticationSuccess';
