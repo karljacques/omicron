@@ -23,3 +23,6 @@ Route::post('/jump/{jump_node}', 'Game\Navigation\PositionController@jump');
 
 Route::post('/dock/{dockable}', 'Game\Navigation\DockingController@dock');
 Route::post('/undock/', 'Game\Navigation\DockingController@undock');
+
+// Trading
+Route::post('marketplace/buy', 'Game\Marketplace\TradingController@buy');

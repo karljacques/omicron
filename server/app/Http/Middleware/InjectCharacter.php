@@ -19,8 +19,10 @@ class InjectCharacter
     public function handle($request, Closure $next)
     {
         $user = $request->user();
+
         if ($user) {
             $character = $user->character->first();
+
             app()->instance(Character::class, $character);
         }
 

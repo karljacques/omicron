@@ -5,7 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @property Ship ship
+ * @property Ship  ship
+ * @property mixed money
  */
 class Character extends Model
 {

@@ -6,6 +6,7 @@ namespace App;
  * @property mixed system
  * @property mixed fuel
  * @property mixed docked_at
+ * @property mixed max_fuel
  */
 class Ship extends Dockable
 {
