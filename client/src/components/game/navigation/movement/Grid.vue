@@ -16,14 +16,6 @@
                     </v-icon>
                 </td>
                 <td>
-                    <v-progress-circular
-                            v-if="!canJump"
-                            size="24"
-                            indeterminate
-                            color="amber"
-                            width="1"
-                    >{{ (timeToNextJump / 1000.0).toFixed(1) }}
-                    </v-progress-circular>
                 </td>
                 <td>
                     <v-icon v-if="rightMoveExists" class="arrow" @click="move({x: 1, y: 0})">
@@ -45,30 +37,31 @@
 </template>
 
 <script>
-    import {mapGetters, mapActions} from 'vuex';
-    import {EventBus} from '../../../../eventBus';
+    import { mapGetters, mapActions } from 'vuex';
+    import { EventBus } from '../../../../eventBus';
 
     export default {
-        name: "Grid",
+        name:    "Grid",
         methods: {
             ...mapActions({
-                move: 'navigation/move'
+                move: 'vessel/move'
             })
         },
-        mounted() {
-            EventBus.$on('keyup', ({key}) => {
+
+        mounted () {
+            EventBus.$on('keyup', ({ key }) => {
                 switch (key) {
                     case 'ArrowUp':
-                        this.move({x: 0, y: 1});
+                        this.move({ x: 0, y: 1 });
                         break;
                     case 'ArrowDown':
-                        this.move({x: 0, y: -1});
+                        this.move({ x: 0, y: -1 });
                         break;
                     case 'ArrowLeft':
-                        this.move({x: -1, y: 0});
+                        this.move({ x: -1, y: 0 });
                         break;
                     case 'ArrowRight':
-                        this.move({x: 1, y: 0});
+                        this.move({ x: 1, y: 0 });
                         break;
                 }
 
@@ -76,25 +69,25 @@
         },
         computed: {
             ...mapGetters({
-                system: 'navigation/system',
-                position: 'navigation/position'
+                systemSizeX: 'navigation/systemSizeX',
+                systemSizeY: 'navigation/systemSizeY',
+                position:    'vessel/position'
             }),
-            upMoveExists() {
-                return this.system.size_y > this.position.y;
+            upMoveExists () {
+                return this.systemSizeY > this.position.y;
             },
-            downMoveExists() {
-                return this.$store.getters['navigation/position'].y > 1;
+            downMoveExists () {
+                return this.position.y > 1;
             },
-            leftMoveExists() {
-                return this.$store.getters['navigation/position'].x > 1;
+            leftMoveExists () {
+                return this.position.x > 1;
             },
-            rightMoveExists() {
-                return this.system.size_x > this.position.x;
+            rightMoveExists () {
+                return this.systemSizeX > this.position.x;
             },
-            ...mapGetters({
-                canJump: 'vessel/engine/canJump',
-                timeToNextJump: 'vessel/engine/timeToNextJump'
-            })
+            canJump () {
+                return true;
+            }
         }
     }
 </script>

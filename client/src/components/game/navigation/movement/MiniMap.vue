@@ -31,11 +31,11 @@
                         let x = relativeX + this.position.x - this.mapSize;
                         let y = relativeY + this.position.y - this.mapSize;
 
-                        let sector = this.$store.getters['navigation/system/sector']({ x, y });
+                        let sector = this.sector({ x, y });
 
                         grid[(this.mapSize * 2) - relativeY][relativeX] = {
                             sector,
-                            sectorType: this.$store.getters['navigation/system/sectorType'](sector.sector_type_id),
+                            sectorType: this.sectorType(sector.sector_type_id),
                             letter:     this.getSectorLetter(x, y)
                         };
                     }
@@ -44,20 +44,24 @@
                 return grid;
             },
             ...mapGetters({
-                system:   'navigation/system',
-                position: 'navigation/position'
+                position: 'vessel/position'
             }),
-            ...mapGetters('navigation/system', [
+            ...mapGetters('navigation', [
                 'jumpNodes',
                 'planets',
-                'stations'
+                'stations',
+                'sectorType',
+                'sector',
+                'system',
+                'systemSizeX',
+                'systemSizeY'
             ])
         },
         methods:  {
             getSectorLetter (x, y) {
-                const node = this.jumpNodes.find(n => n.source_x === x && n.source_y === y);
+                const node    = this.jumpNodes.find(n => n.source_x === x && n.source_y === y);
                 const station = this.stations.find(s => s.position_x === x && s.position_y === y);
-                const planet = this.planets.find(p => p.position_x === x && p.position_y === y);
+                const planet  = this.planets.find(p => p.position_x === x && p.position_y === y);
 
                 let str = ''
 
@@ -85,10 +89,10 @@
             getSectorClassList (sector) {
                 return {
                     'current-location': sector.sector.x === this.position.x && sector.sector.y === this.position.y,
-                    'top-edge':         sector.sector.y === this.system.size_y + 1 && sector.sector.x <= this.system.size_x && sector.sector.x > 0,
-                    'right-edge':       sector.sector.x === this.system.size_x + 1 && sector.sector.y <= this.system.size_y && sector.sector.y > 0,
-                    'bottom-edge':      sector.sector.y === 0 && sector.sector.x > 0 && sector.sector.x <= this.system.size_x,
-                    'left-edge':        sector.sector.x === 0 && sector.sector.y > 0 && sector.sector.y <= this.system.size_y,
+                    'top-edge':         sector.sector.y === this.systemSizeY + 1 && sector.sector.x <= this.systemSizeX && sector.sector.x > 0,
+                    'right-edge':       sector.sector.x === this.systemSizeX + 1 && sector.sector.y <= this.systemSizeY && sector.sector.y > 0,
+                    'bottom-edge':      sector.sector.y === 0 && sector.sector.x > 0 && sector.sector.x <= this.systemSizeX,
+                    'left-edge':        sector.sector.x === 0 && sector.sector.y > 0 && sector.sector.y <= this.systemSizeY,
                 };
             }
         }

@@ -1,13 +1,13 @@
 <template>
     <v-container>
         <v-layout>
-            <v-flex xs4>
+            <v-flex xs4 v-if="system">
                 <v-card height="100%">
-                    <v-img class="sector-image" :src="sectorType.img"></v-img>
+                    <v-img class="sector-image" :src="currentSectorType.img"></v-img>
                     <v-card-title primary-title>
                         <div>
-                            <h3>{{ sectorType.name }}</h3>
-                            <p>Move Cost: {{ sectorType.moveCost }}</p>
+                            <h3>{{ currentSectorType.name }}</h3>
+                            <p>Move Cost: {{ currentSectorType.moveCost }}</p>
 
                             <h4>({{ system.id }}) {{ system.name }}</h4>
                             <p>Sector {{ position.x }}.{{ position.y }}</p>
@@ -108,9 +108,9 @@
                 });
             },
             ...mapActions({
-                jump:   'navigation/jump',
-                dock:   'navigation/dock',
-                undock: 'navigation/undock'
+                jump:   'vessel/jump',
+                dock:   'vessel/dock',
+                undock: 'vessel/undock'
             })
         },
         computed: {
@@ -118,16 +118,20 @@
                 sector:        'navigation/sector',
                 sectorType:    'navigation/sectorType',
                 system:        'navigation/system',
-                position:      'navigation/position',
-                docked:        'navigation/docked',
+                position:      'vessel/position',
+                docked:        'vessel/docked',
                 shipsInSector: 'sensors/ships',
                 currentShip:   'vessel/ship'
             }),
-            ...mapGetters('navigation/system', [
+            ...mapGetters('navigation', [
                 'jumpNodes',
                 'planets',
                 'stations'
             ]),
+            currentSectorType () {
+                const sector = this.sector(this.position);
+                return this.sectorType(sector.sector_type_id);
+            },
             jumpNodeInSector () {
                 return this.jumpNodes.find(x => x.source_x === this.position.x && x.source_y === this.position.y);
             },

@@ -12,10 +12,10 @@
     export default {
         name:     "StationOverview",
         methods:  {
-            ...mapActions('navigation', ['undock'])
+            ...mapActions('vessel', ['undock'])
         },
         computed: {
-            ...mapGetters('navigation', ['docked'])
+            ...mapGetters('vessel', ['docked'])
         }
     }
 </script>

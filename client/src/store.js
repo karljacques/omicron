@@ -34,12 +34,6 @@ const store = new Vuex.Store({
             return network.get('/fetchInitialState').then(response => {
                 const data = response.data;
 
-                const position = {
-                    system_id: data.ship.system_id,
-                    x:         data.ship.position_x,
-                    y:         data.ship.position_y
-                };
-
                 const system = response.data.system;
                 const nodes  = response.data.jump_nodes;
 
@@ -47,15 +41,10 @@ const store = new Vuex.Store({
                 const stations = response.data.stations;
 
                 const shipsInSector = response.data.ships_in_sector;
+
                 commit('sensors/setShips', shipsInSector);
-
-                commit('navigation/setPosition', position);
-                commit('navigation/dock', { dockableId: response.data.ship.docked_at });
-
-                commit('navigation/system/set', { system, nodes, planets, stations });
-
+                commit('navigation/set', { system, nodes, planets, stations });
                 commit('vessel/set', response.data.ship);
-                commit('vessel/engine/jump', { fuel: response.data.ship.fuel }, { root: true });
             });
         }
     },

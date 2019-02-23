@@ -11,7 +11,7 @@
         name: "Alerts",
         computed: {
             ...mapGetters({
-                fuel: 'vessel/engine/fuel'
+                fuel: 'vessel/fuel'
             })
         }
     }

@@ -4,16 +4,16 @@ const SET_USER = 'setUser';
 
 export default {
     namespaced: true,
-    state: {
+    state:      {
         user: null
     },
-    getters: {
-        isLoggedIn(state) {
+    getters:    {
+        isLoggedIn (state) {
             return state.user !== null;
         }
     },
-    actions: {
-        attemptLogin({commit}, credentials) {
+    actions:    {
+        attemptLogin ({ commit }, credentials) {
             return connection.post('/login', credentials).then(response => {
                 if (response.data.auth) {
                     commit(SET_USER, true);
@@ -22,7 +22,7 @@ export default {
                 return response.data.auth;
             });
         },
-        checkAuthenticationState({commit}) {
+        checkAuthenticationState ({ commit }) {
             return connection.get('/loginCheck')
                 .then(response => {
                     if (response.data.auth) {
@@ -32,8 +32,8 @@ export default {
                 });
         }
     },
-    mutations: {
-        [SET_USER](state, user) {
+    mutations:  {
+        [SET_USER] (state, user) {
             state.user = user;
         }
     }
