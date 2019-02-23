@@ -94,16 +94,32 @@ class DatabaseSeeder extends Seeder
         });
 
         $characters->each(function ($character) use ($faker, $ship_types, $systems) {
-            $system = $faker->randomElement($systems);
-            $ship   = new App\Ship([
-                                       'name'         => 'KMS ' . ucwords($faker->domainWord),
-                                       'character_id' => $character->id,
-                                       'ship_type_id' => $faker->randomElement($ship_types->pluck('id')->all()),
-                                       'system_id'    => $system->id,
-                                       'position_x'   => $faker->numberBetween(1, $system->size_x),
-                                       'position_y'   => $faker->numberBetween(1, $system->size_y),
-                                       'fuel'         => 1250
-                                   ]);
+            $system  = $faker->randomElement($systems);
+            $shields = $faker->numberBetween(0, 50) * 100;
+            $armour  = $faker->numberBetween(0, 50) * 100;
+            $ship    = new App\Ship([
+                                        'name'         => 'KMS ' . ucwords($faker->domainWord),
+                                        'character_id' => $character->id,
+                                        'ship_type_id' => $faker->randomElement($ship_types->pluck('id')->all()),
+                                        'system_id'    => $system->id,
+                                        'position_x'   => $faker->numberBetween(1, $system->size_x),
+                                        'position_y'   => $faker->numberBetween(1, $system->size_y),
+
+                                        'fuel'     => 1250,
+                                        'max_fuel' => 1250,
+
+                                        'power'     => 1000,
+                                        'max_power' => 1000,
+
+                                        'shields'     => $faker->numberBetween(0, $shields),
+                                        'max_shields' => $shields,
+
+                                        'armour'     => $faker->numberBetween(0, $armour),
+                                        'max_armour' => $armour,
+
+                                        'hit_points'     => 100,
+                                        'max_hit_points' => 100
+                                    ]);
             $ship->save();
 
         });

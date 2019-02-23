@@ -67,6 +67,10 @@ export default {
                         dockableId
                     });
 
+                    if (response.data.dockable) {
+                        commit('dockable/set', response.data.dockable, { root: true });
+                    }
+
                     return true;
                 }
             })
@@ -75,6 +79,8 @@ export default {
             return network.post(`undock`).then(response => {
                 if (response.data.success) {
                     commit('undock');
+
+                    commit('dockable/set', null, { root: true });
                 }
             })
         }

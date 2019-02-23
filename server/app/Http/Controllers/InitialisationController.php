@@ -44,7 +44,7 @@ class InitialisationController extends Controller
                 'stations'        => StationResource::collection($stations),
                 'ships_in_sector' => ShipResource::collection($ships_in_sector),
                 'character'       => new CharacterResource($character),
-                'dockable'        => new DockableResource($dockable)
+                'dockable'        => $dockable ? new DockableResource($dockable) : null
             ]);
     }
 }
