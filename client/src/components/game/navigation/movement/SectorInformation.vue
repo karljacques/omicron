@@ -58,13 +58,32 @@
                     </v-card-title>
                 </v-card>
             </v-flex>
+
+
+        </v-layout>
+        <h3 v-if="shipsInSector.length > 1">Ships in sector</h3>
+        <v-layout>
+            <v-flex xs12 v-for="ship in shipsInSector" :key="ship.id" v-if="ship.id !== currentShip.id">
+                <v-card>
+                    <v-card-title>
+                        <h4>{{ ship.name }}</h4>
+                    </v-card-title>
+                    <v-card-text>
+                        Level 1
+                    </v-card-text>
+                    <v-card-actions>
+                        <v-btn>Attack</v-btn>
+                        <v-btn>Message</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-flex>
         </v-layout>
     </v-container>
 </template>
 
 <script>
     import { mapGetters, mapActions } from 'vuex';
-    import {EventBus} from '../../../../eventBus';
+    import { EventBus } from '../../../../eventBus';
 
     export default {
         name:     "SectorInformation",
@@ -89,18 +108,20 @@
                 });
             },
             ...mapActions({
-                jump: 'navigation/jump',
-                dock: 'navigation/dock',
+                jump:   'navigation/jump',
+                dock:   'navigation/dock',
                 undock: 'navigation/undock'
             })
         },
         computed: {
             ...mapGetters({
-                sector:     'navigation/sector',
-                sectorType: 'navigation/sectorType',
-                system:     'navigation/system',
-                position:   'navigation/position',
-                docked:     'navigation/docked'
+                sector:        'navigation/sector',
+                sectorType:    'navigation/sectorType',
+                system:        'navigation/system',
+                position:      'navigation/position',
+                docked:        'navigation/docked',
+                shipsInSector: 'sensors/ships',
+                currentShip:   'vessel/ship'
             }),
             ...mapGetters('navigation/system', [
                 'jumpNodes',

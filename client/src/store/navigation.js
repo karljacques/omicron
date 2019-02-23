@@ -37,6 +37,7 @@ export default {
                 if (response.data.success) {
                     commit('vessel/engine/jump', { fuel: response.data.ship.fuel }, { root: true });
                     commit('setPosition', { x: response.data.ship.position_x, y: response.data.ship.position_y });
+                    commit('sensors/setShips', response.data.ships_in_sector, {root: true});
                 } else {
                     console.error('Unable to jump to co-ordinates');
                 }

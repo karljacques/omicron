@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Character;
 use App\JumpNode;
 use App\Planet;
+use App\Repositories\ShipRepository;
 use App\Ship;
 use App\Station;
 use App\System;
@@ -20,23 +21,26 @@ use App\Http\Resources\JumpNode as JumpNodeResource;
 
 class InitialisationController extends Controller
 {
-    public function initialState(Character $character)
+    public function initialState(Character $character, ShipRepository $ship_repository)
     {
         // Current user
-        $ship = $character->ship;
+        $ship   = $character->ship;
         $system = $ship->system;
 
         $jump_nodes = JumpNode::where('source_system_id', $system->id)->get();
         $stations   = Station::where('system_id', $system->id)->get();
         $planets    = Planet::where('system_id', $system->id)->get();
 
+        $ships_in_sector = $ship_repository->getShipsInSector($ship->getPosition());
+
         return response()->json(
             [
-                'ship'       => new ShipResource($ship),
-                'system'     => new SystemResource($system),
-                'jump_nodes' => JumpNodeResource::collection($jump_nodes),
-                'planets'    => PlanetResource::collection($planets),
-                'stations'   => StationResource::collection($stations)
+                'ship'            => new ShipResource($ship),
+                'system'          => new SystemResource($system),
+                'jump_nodes'      => JumpNodeResource::collection($jump_nodes),
+                'planets'         => PlanetResource::collection($planets),
+                'stations'        => StationResource::collection($stations),
+                'ships_in_sector' => ShipResource::collection($ships_in_sector)
             ]);
     }
 }

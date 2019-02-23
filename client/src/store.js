@@ -7,8 +7,9 @@ Vue.use(Vuex);
 import navigation from './store/navigation';
 import vessel from './store/vessel';
 import user from './store/user';
+import sensors from './store/sensors';
+
 import network from './network';
-import { EventBus } from './eventBus';
 
 const store = new Vuex.Store({
     state:     {
@@ -45,11 +46,15 @@ const store = new Vuex.Store({
                 const planets  = response.data.planets;
                 const stations = response.data.stations;
 
+                const shipsInSector = response.data.ships_in_sector;
+                commit('sensors/setShips', shipsInSector);
+
                 commit('navigation/setPosition', position);
                 commit('navigation/dock', { dockableId: response.data.ship.docked_at });
 
                 commit('navigation/system/set', { system, nodes, planets, stations });
 
+                commit('vessel/set', response.data.ship);
                 commit('vessel/engine/jump', { fuel: response.data.ship.fuel }, { root: true });
             });
         }
@@ -62,7 +67,8 @@ const store = new Vuex.Store({
     modules:   {
         navigation,
         vessel,
-        user
+        user,
+        sensors
     }
 });
 
