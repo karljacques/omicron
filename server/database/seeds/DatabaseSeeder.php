@@ -82,7 +82,7 @@ class DatabaseSeeder extends Seeder
         $users->each(function ($user) use ($faker, $ship_types, $systems) {
             $system = $faker->randomElement($systems);
             $ship   = new App\Ship([
-                                       'name'         => 'KMS '. $faker->domainWord,
+                                       'name'         => 'KMS ' . $faker->domainWord,
                                        'user_id'      => $user->id,
                                        'ship_type_id' => $faker->randomElement($ship_types->pluck('id')->all()),
                                        'system_id'    => $system->id,
@@ -94,7 +94,7 @@ class DatabaseSeeder extends Seeder
 
         });
 
-        $jump_node_count = $faker->numberBetween($systems->count() * 5, ($systems->count() * 6) + 10);
+        $jump_node_count = $faker->numberBetween($systems->count() * 2, $systems->count() * 3);
 
         for ($i = 0; $i < $jump_node_count; $i++) {
             $source_system = $faker->randomElement($systems);
@@ -103,16 +103,42 @@ class DatabaseSeeder extends Seeder
                 $destination_system = $faker->randomElement($systems);
             } while ($source_system === $destination_system);
 
-            $jump_node = new App\JumpNode([
-                                              'source_system_id'      => $source_system->id,
-                                              'source_x'              => $faker->numberBetween(1, $source_system->size_x),
-                                              'source_y'              => $faker->numberBetween(1, $source_system->size_y),
-                                              'destination_system_id' => $destination_system->id,
-                                              'destination_x'         => $faker->numberBetween(1, $destination_system->size_x),
-                                              'destination_y'         => $faker->numberBetween(1, $destination_system->size_y),
-                                          ]);
+
+            // Nodes are two way
+
+            $source = [
+                'x' => $faker->numberBetween(1, $source_system->size_x),
+                'y' => $faker->numberBetween(1, $source_system->size_y)
+            ];
+
+            $destination = [
+                'x' => $faker->numberBetween(1, $destination_system->size_x),
+                'y' => $faker->numberBetween(1, $destination_system->size_y)
+            ];
+
+            $jump_node = new App\JumpNode(
+                [
+                    'source_system_id'      => $source_system->id,
+                    'source_x'              => $source['x'],
+                    'source_y'              => $source['y'],
+                    'destination_system_id' => $destination_system->id,
+                    'destination_x'         => $destination['x'],
+                    'destination_y'         => $destination['y'],
+                ]);
 
             $jump_node->save();
+
+            $jump_node_reverse = new App\JumpNode(
+                [
+                    'source_system_id'      => $destination_system->id,
+                    'source_x'              => $destination['x'],
+                    'source_y'              => $destination['y'],
+                    'destination_system_id' => $source_system->id,
+                    'destination_x'         => $source['x'],
+                    'destination_y'         => $source['y'],
+                ]);
+
+            $jump_node_reverse->save();
         }
     }
 }
