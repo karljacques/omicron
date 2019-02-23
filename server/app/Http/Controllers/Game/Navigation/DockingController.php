@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers\Game\Navigation;
 
+use App\Character;
 use App\Http\Controllers\Controller;
 use App\Dockable;
 use App\Services\Game\Navigation\DockingServiceInterface;
@@ -11,17 +12,14 @@ use Illuminate\Auth\AuthManager;
 class DockingController extends Controller
 {
     protected $docking_service;
-    protected $auth_manager;
 
-    public function __construct(DockingServiceInterface $docking_service, AuthManager $auth_manager)
+    public function __construct(DockingServiceInterface $docking_service)
     {
         $this->docking_service = $docking_service;
-        $this->auth_manager    = $auth_manager;
     }
 
-    public function dock(Dockable $dockable)
+    public function dock(Dockable $dockable, Character $character)
     {
-        $character = $this->auth_manager->user()->character->first();
         $ship = $character->ship;
 
         $success = $this->docking_service->dock($ship, $dockable);
@@ -32,9 +30,8 @@ class DockingController extends Controller
             ]);
     }
 
-    public function undock()
+    public function undock(Character $character)
     {
-        $character = $this->auth_manager->user()->character->first();
         $ship = $character->ship;
 
         $success = $this->docking_service->undock($ship);
