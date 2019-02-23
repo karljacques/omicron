@@ -7,7 +7,6 @@ use App\Character;
 use App\Http\Controllers\Controller;
 use App\Dockable;
 use App\Services\Game\Navigation\DockingServiceInterface;
-use Illuminate\Auth\AuthManager;
 
 class DockingController extends Controller
 {

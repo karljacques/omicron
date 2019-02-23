@@ -12,28 +12,31 @@ use App\System;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\Ship as ShipResource;
+use App\Http\Resources\System as SystemResource;
+use App\Http\Resources\Station as StationResource;
+use App\Http\Resources\Planet as PlanetResource;
+use App\Http\Resources\JumpNode as JumpNodeResource;
 
 class InitialisationController extends Controller
 {
-    public function initialState(Character $character) {
+    public function initialState(Character $character)
+    {
         // Current user
         $ship = $character->ship;
-
-        // Get system
-        //$system = System::find($ship->system_id);
-        $system = clone $ship->system;
-        $system->sectors;
+        $system = $ship->system;
 
         $jump_nodes = JumpNode::where('source_system_id', $system->id)->get();
-        $stations = Station::where('system_id', $system->id)->get();
-        $planets = Planet::where('system_id', $system->id)->get();
+        $stations   = Station::where('system_id', $system->id)->get();
+        $planets    = Planet::where('system_id', $system->id)->get();
 
-        return response()->json([
-            'ship' => $ship,
-            'system' => $system,
-            'jump_nodes' => $jump_nodes,
-            'planets' => $planets,
-            'stations' => $stations
-        ]);
+        return response()->json(
+            [
+                'ship'       => new ShipResource($ship),
+                'system'     => new SystemResource($system),
+                'jump_nodes' => JumpNodeResource::collection($jump_nodes),
+                'planets'    => PlanetResource::collection($planets),
+                'stations'   => StationResource::collection($stations)
+            ]);
     }
 }
