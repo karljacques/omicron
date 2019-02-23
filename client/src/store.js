@@ -8,6 +8,7 @@ import navigation from './store/navigation';
 import vessel from './store/vessel';
 import user from './store/user';
 import sensors from './store/sensors';
+import character from './store/character';
 
 import network from './network';
 
@@ -42,9 +43,12 @@ const store = new Vuex.Store({
 
                 const shipsInSector = response.data.ships_in_sector;
 
+                const character = response.data.character;
+
                 commit('sensors/setShips', shipsInSector);
                 commit('navigation/set', { system, nodes, planets, stations });
                 commit('vessel/set', response.data.ship);
+                commit('character/set', character);
             });
         }
     },
@@ -57,7 +61,8 @@ const store = new Vuex.Store({
         navigation,
         vessel,
         user,
-        sensors
+        sensors,
+        character
     }
 });
 

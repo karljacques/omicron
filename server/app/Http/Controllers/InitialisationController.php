@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Character;
 use App\JumpNode;
 use App\Planet;
 use App\Repositories\ShipRepository;
-use App\Ship;
 use App\Station;
-use App\System;
-use Illuminate\Auth\AuthManager;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+
 use App\Http\Resources\Ship as ShipResource;
 use App\Http\Resources\System as SystemResource;
 use App\Http\Resources\Station as StationResource;
 use App\Http\Resources\Planet as PlanetResource;
 use App\Http\Resources\JumpNode as JumpNodeResource;
+use App\Http\Resources\Character as CharacterResource;
 
 class InitialisationController extends Controller
 {
@@ -40,7 +36,8 @@ class InitialisationController extends Controller
                 'jump_nodes'      => JumpNodeResource::collection($jump_nodes),
                 'planets'         => PlanetResource::collection($planets),
                 'stations'        => StationResource::collection($stations),
-                'ships_in_sector' => ShipResource::collection($ships_in_sector)
+                'ships_in_sector' => ShipResource::collection($ships_in_sector),
+                'character'       => new CharacterResource($character)
             ]);
     }
 }

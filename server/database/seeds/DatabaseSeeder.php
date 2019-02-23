@@ -25,8 +25,9 @@ class DatabaseSeeder extends Seeder
         $users->each(function ($user) use ($characters, $faker) {
             $character = new \App\Character(
                 [
-                    'name' => $faker->name,
-                    'user_id' => $user->id
+                    'name'    => $faker->name,
+                    'user_id' => $user->id,
+                    'money'   => 100000
                 ]);
 
             $character->save();
@@ -95,7 +96,7 @@ class DatabaseSeeder extends Seeder
         $characters->each(function ($character) use ($faker, $ship_types, $systems) {
             $system = $faker->randomElement($systems);
             $ship   = new App\Ship([
-                                       'name'         => 'KMS ' . $faker->domainWord,
+                                       'name'         => 'KMS ' . ucwords($faker->domainWord),
                                        'character_id' => $character->id,
                                        'ship_type_id' => $faker->randomElement($ship_types->pluck('id')->all()),
                                        'system_id'    => $system->id,

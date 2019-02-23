@@ -19,6 +19,8 @@ class CreateCharactersTable extends Migration
             $table->unsignedInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
 
+            $table->unsignedInteger('money')->default(0)->comment('Stored in "pennies"');
+
             $table->timestamps();
         });
     }
