@@ -21,8 +21,8 @@ class DockingController extends Controller
 
     public function dock(Dockable $dockable)
     {
-        $user = $this->auth_manager->user();
-        $ship = $user->ship;
+        $character = $this->auth_manager->user()->character->first();
+        $ship = $character->ship;
 
         $success = $this->docking_service->dock($ship, $dockable);
 
@@ -34,8 +34,8 @@ class DockingController extends Controller
 
     public function undock()
     {
-        $user = $this->auth_manager->user();
-        $ship = $user->ship;
+        $character = $this->auth_manager->user()->character->first();
+        $ship = $character->ship;
 
         $success = $this->docking_service->undock($ship);
 

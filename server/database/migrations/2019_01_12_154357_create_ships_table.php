@@ -6,9 +6,6 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateShipsTable extends Migration
 {
-    const SHIPS_TABLE = 'ships';
-    const SHIP_TYPES_TABLE = 'ship_types';
-    const USERS_TABLE = 'users';
 
     /**
      * Run the migrations.
@@ -17,14 +14,14 @@ class CreateShipsTable extends Migration
      */
     public function up()
     {
-        Schema::create(self::SHIPS_TABLE, function (Blueprint $table) {
+        Schema::create('ships', function (Blueprint $table) {
             $table->inherits('dockable');
 
-            $table->unsignedInteger('user_id');
-            $table->foreign('user_id')->references('id')->on(self::USERS_TABLE);
+            $table->unsignedInteger('character_id');
+            $table->foreign('character_id')->references('id')->on('characters');
 
             $table->unsignedInteger('ship_type_id');
-            $table->foreign('ship_type_id')->references('id')->on(self::SHIP_TYPES_TABLE);
+            $table->foreign('ship_type_id')->references('id')->on('ship_types');
 
             $table->unsignedInteger('fuel');
         });
@@ -37,6 +34,6 @@ class CreateShipsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists(self::SHIPS_TABLE);
+        Schema::dropIfExists('ships');
     }
 }

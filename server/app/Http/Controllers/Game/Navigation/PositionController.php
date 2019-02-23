@@ -27,9 +27,10 @@ class PositionController extends Controller
 
     public function jump(JumpNode $jump_node, JumpNodeTravelServiceInterface $jump_node_travel_service)
     {
-        $user = Auth::user();
+        $character = Auth::user()->character->first();
+        $ship = $character->ship;
 
-        $jump_success = $jump_node_travel_service->jump($user->ship, $jump_node);
+        $jump_success = $jump_node_travel_service->jump($ship, $jump_node);
 
         if (!$jump_success) {
             return response()->json(
@@ -39,21 +40,21 @@ class PositionController extends Controller
                 ]);
         }
 
-        $system = System::find($user->ship->system_id);
+        $system = System::find($ship->system_id);
         $system->load('sectors');
 
         $stations = Station::where('system_id', $system->id)->get();
         $planets  = Planet::where('system_id', $system->id)->get();
 
         // Get ships in sector
-        $ships_in_sector = $this->ship_repository->getShipsInSector($user->ship->getPosition());
+        $ships_in_sector = $this->ship_repository->getShipsInSector($ship->getPosition());
 
         return response()->json(
             [
                 'success'         => true,
-                'ship'            => $user->ship,
+                'ship'            => $ship,
                 'system'          => $system,
-                'jump_nodes'      => JumpNode::where('source_system_id', $user->ship->system_id)->get(),
+                'jump_nodes'      => JumpNode::where('source_system_id', $ship->system_id)->get(),
                 'planets'         => $planets,
                 'stations'        => $stations,
                 'ships_in_sector' => $ships_in_sector
@@ -65,7 +66,8 @@ class PositionController extends Controller
         $user = Auth::user();
 
         /** @var Ship $ship */
-        $ship = $user->ship;
+        $character = Auth::user()->character->first();
+        $ship = $character->ship;
 
         $delta = Position::fromArray($request->only('x', 'y'));;
 

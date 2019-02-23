@@ -16,10 +16,8 @@ class InitialisationController extends Controller
 {
     public function initialState(AuthManager $auth_manager) {
         // Current user
-        $user = $auth_manager->user();
-
-        // Get ship
-        $ship = $user->ship;
+        $character = $auth_manager->user()->character->first();
+        $ship = $character->ship;
 
         // Get system
         //$system = System::find($ship->system_id);

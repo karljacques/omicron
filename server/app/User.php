@@ -28,7 +28,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function ship() {
-        return $this->hasOne(Ship::class);
+    public function character() {
+        return $this->hasOne(Character::class);
     }
 }

@@ -21,6 +21,19 @@ class DatabaseSeeder extends Seeder
                                                           'name'  => 'Test Account'
                                                       ]));
 
+        $characters = new \Illuminate\Support\Collection();
+        $users->each(function ($user) use ($characters, $faker) {
+            $character = new \App\Character(
+                [
+                    'name' => $faker->name,
+                    'user_id' => $user->id
+                ]);
+
+            $character->save();
+
+            $characters->push($character);
+        });
+
         // Create Systems
         $systems = factory(App\System::class, 5)->create();
 
@@ -79,11 +92,11 @@ class DatabaseSeeder extends Seeder
 
         });
 
-        $users->each(function ($user) use ($faker, $ship_types, $systems) {
+        $characters->each(function ($character) use ($faker, $ship_types, $systems) {
             $system = $faker->randomElement($systems);
             $ship   = new App\Ship([
                                        'name'         => 'KMS ' . $faker->domainWord,
-                                       'user_id'      => $user->id,
+                                       'character_id' => $character->id,
                                        'ship_type_id' => $faker->randomElement($ship_types->pluck('id')->all()),
                                        'system_id'    => $system->id,
                                        'position_x'   => $faker->numberBetween(1, $system->size_x),
