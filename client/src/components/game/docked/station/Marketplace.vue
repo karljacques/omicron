@@ -3,7 +3,12 @@
         <h2>Buy</h2>
         <market-table :fuel-required="fuelRequired"
                       action="buy"
-                      :items="fromServer"
+                      :items="sold"
+                      @transaction="onTransaction"/>
+
+        <h2>Sell</h2>
+        <market-table action="sell"
+                      :items="bought"
                       @transaction="onTransaction"/>
     </div>
 </template>
@@ -30,13 +35,14 @@
         },
         created () {
             network.post('/marketplace/get/' + this.ship.docked_at).then(response => {
-                this.fromServer = response.data.commodities_sold;
+                this.bought = response.data.commodities_bought;
+                this.sold   = response.data.commodities_sold;
             });
         },
         data () {
             return {
-                fromServer: [],
-
+                bought: [],
+                sold:   []
             }
         },
         methods:    {

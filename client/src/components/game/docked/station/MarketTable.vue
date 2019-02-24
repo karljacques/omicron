@@ -3,7 +3,7 @@
         <template slot="items" slot-scope="props">
             <td>{{ props.item.commodity.name }}</td>
             <td>{{ props.item.stock }}</td>
-            <td>{{ props.item.sell|currency }}</td>
+            <td>{{ props.item[costField]|currency }}</td>
             <td>
                 <v-text-field v-model="quantities[props.item.commodity_id]" type="number"
                               placeholder="Quantity"></v-text-field>
@@ -13,7 +13,7 @@
             <td>
                 <v-btn color="primary" outline @click="onClickAction(props.item)"
                        :disabled="!quantities[props.item.commodity_id] || (calculateTotalCost(props.item) > money)">
-                    Buy
+                    {{ action }}
                 </v-btn>
             </td>
         </template>
@@ -38,11 +38,14 @@
         },
         computed: {
             ...mapGetters('character', ['money']),
+            costField() {
+                return this.action === 'buy' ? 'sell' : 'buy';
+            }
         },
         methods:  {
             calculateTotalCost (item) {
                 const quantity = this.quantities[item.commodity_id] ? Math.min(item.stock, this.quantities[item.commodity_id]) : 0;
-                return quantity * item.sell;
+                return quantity * item[this.costField];
             },
             onClickAction (item) {
                 this.$emit('transaction', {
