@@ -12,7 +12,7 @@
             </td>
             <td>
                 <v-btn color="primary" outline @click="onClickAction(props.item)"
-                       :disabled="!quantities[props.item.commodity_id] || (calculateTotalCost(props.item) > money)">
+                       :disabled="isButtonDisabled(props.item)">
                     {{ action }}
                 </v-btn>
             </td>
@@ -43,6 +43,12 @@
             }
         },
         methods:  {
+            isButtonDisabled (item) {
+                if (this.action === 'sell') {
+                    return false;
+                }
+                return !this.quantities[item.commodity_id] || (this.calculateTotalCost(item) > this.money);
+            },
             calculateTotalCost (item) {
                 const quantity = this.quantities[item.commodity_id] ? Math.min(item.stock, this.quantities[item.commodity_id]) : 0;
                 return quantity * item[this.costField];

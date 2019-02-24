@@ -35,14 +35,24 @@ class CargoService implements CargoServiceInterface
             $ship->save();
         }
 
-        $this->cargo_repository->addStorableToShip($ship, $storable, $quantity);
-
+        $current_quantity = $this->cargo_repository->getStorableQuantity($ship, $storable);
+        if ($current_quantity > 0) {
+            $this->cargo_repository->changeStorableQuantity($ship, $storable, $quantity + $current_quantity);
+        } else {
+            $this->cargo_repository->addStorableToShip($ship, $storable, $quantity);
+        }
         return true;
-        // TODO: Implement addStorableToCargo() method.
     }
 
     public function removeStorableFromCargo(Ship $ship, Storable $storable, int $quantity): bool
     {
-        // TODO: Implement removeStorableFromCargo() method.
+        $current_quantity = $this->cargo_repository->getStorableQuantity($ship, $storable);
+        if ($current_quantity - $quantity > 0) {
+            $this->cargo_repository->changeStorableQuantity($ship, $storable, $current_quantity - $quantity);
+        } else {
+            $this->cargo_repository->removeStorableFromShip($ship, $storable);
+        }
+
+        return true;
     }
 }

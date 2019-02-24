@@ -9,4 +9,5 @@ use App\Commodity;
 interface TradingServiceInterface
 {
     public function buy(Character $character, Commodity $commodity, int $quantity, int $price);
+    public function sell(Character $character, Commodity $commodity, int $quantity, int $price);
 }

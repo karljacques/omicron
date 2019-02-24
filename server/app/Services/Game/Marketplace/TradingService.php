@@ -60,4 +60,38 @@ class TradingService implements TradingServiceInterface
 
         return false;
     }
+
+    public function sell(Character $character, Commodity $commodity, int $quantity, int $price)
+    {
+        $ship      = $character->ship;
+        $docked_at = $ship->dockedAt;
+
+        if (!$docked_at) {
+            throw new \Exception('Player not docked');
+            return false;
+        }
+
+        // Check the dockable buys your commodity
+        $dockable_commodity = $this->commodities_repository->getCommodityBoughtAtDockable($docked_at, $commodity);
+
+        if (!$dockable_commodity) {
+            throw new \Exception('Not sold here');
+            return false;
+        }
+
+        if ($dockable_commodity->buy !== $price) {
+            throw new \Exception('Price mismatch');
+            return false;
+        }
+
+        // TODO: Check the user has the quantity they claim
+        $unit_cost  = $dockable_commodity->buy;
+        $total_profit = $unit_cost * $quantity;
+
+        $this->cargo_service->removeStorableFromCargo($character->ship, $commodity, $quantity);
+        $this->finance_service->credit($character, $total_profit);
+
+
+        return true;
+    }
 }

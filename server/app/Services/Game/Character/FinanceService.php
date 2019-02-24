@@ -17,7 +17,8 @@ class FinanceService implements FinanceServiceInterface
 
     public function credit(Character $character, int $money)
     {
-        // TODO: Implement credit() method.
+        $character->money += $money;
+        $character->save();
     }
 
     public function canAfford(Character $character, int $money): bool

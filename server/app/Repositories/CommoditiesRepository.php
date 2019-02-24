@@ -23,6 +23,11 @@ class CommoditiesRepository implements CommoditiesRepositoryInterface
 
     public function getCommoditySoldAtDockable(Dockable $dockable, Commodity $commodity): ?DockableCommodity
     {
-        return DockableCommodity::where('dockable_id', $dockable->id)->where('commodity_id', $commodity->id)->get()->first();
+        return DockableCommodity::where('dockable_id', $dockable->id)->where('commodity_id', $commodity->id)->whereNotNull('sell')->get()->first();
+    }
+
+    public function getCommodityBoughtAtDockable(Dockable $dockable, Commodity $commodity): ?DockableCommodity
+    {
+        return DockableCommodity::where('dockable_id', $dockable->id)->where('commodity_id', $commodity->id)->whereNotNull('buy')->get()->first();
     }
 }

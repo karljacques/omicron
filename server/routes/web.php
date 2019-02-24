@@ -26,4 +26,5 @@ Route::post('/undock/', 'Game\Navigation\DockingController@undock');
 
 // Trading
 Route::post('marketplace/buy', 'Game\Marketplace\TradingController@buy');
+Route::post('marketplace/sell', 'Game\Marketplace\TradingController@sell');
 Route::post('marketplace/get/{dockable}', 'Game\Marketplace\MarketController@get');
