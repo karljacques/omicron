@@ -21,11 +21,6 @@ export default {
             state.ship.position_y = y;
         },
         dock (state, { dockableId }) {
-
-            if (dockableId) {
-                EventBus.$emit('game.dock');
-            }
-
             state.ship.docked_at = dockableId;
         },
         undock (state) {

@@ -27,4 +27,10 @@ class Dockable extends Model
     {
         return new Position($this->position_x, $this->position_y, $this->system_id);
     }
+
+    public function commodities()
+    {
+        return $this->belongsToMany(Commodity::class, 'dockable_commodities', 'dockable_id')
+                    ->withPivot('stock', 'sell', 'buy');
+    }
 }

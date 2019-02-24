@@ -17,6 +17,8 @@ class CreateShipCargoTable extends Migration
             $table->unsignedInteger('ship_id');
             $table->unsignedInteger('commodity_id');
             $table->unsignedInteger('quantity');
+
+            $table->unique(['ship_id', 'commodity_id']);
         });
     }
 

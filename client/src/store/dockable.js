@@ -1,3 +1,5 @@
+import { EventBus } from '../eventBus';
+
 export default {
     namespaced: true,
     state: {
@@ -5,6 +7,11 @@ export default {
     },
     mutations: {
         set(state, dockable) {
+
+            if (state.dockable === null && dockable !== null) {
+                EventBus.$emit('game.dock');
+            }
+
             state.dockable = dockable;
         }
     },

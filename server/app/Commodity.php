@@ -4,7 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Commodity extends Model
+/**
+ * @property mixed id
+ */
+class Commodity extends Storable
 {
     public $timestamps = false;
 }
