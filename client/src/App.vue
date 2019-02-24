@@ -14,6 +14,7 @@
                     <v-flex xs1>
                         <grid/>
                         <status/>
+                        <cargo/>
                     </v-flex>
                     <v-flex xs9>
                         <v-container grid-list-md>
@@ -51,10 +52,11 @@
     import MiniMap from "./components/game/navigation/movement/MiniMap";
     import { EventBus } from "./eventBus";
     import LoginModal from './components/authentication/LoginModal';
+    import Cargo from './components/game/vessel/Cargo';
 
     export default {
         name:       'App',
-        components: { LoginModal, MiniMap, Alerts, Status, Grid },
+        components: { Cargo, LoginModal, MiniMap, Alerts, Status, Grid },
         data () {
             return {
                 modals:   {
