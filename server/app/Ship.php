@@ -18,8 +18,8 @@ class Ship extends Dockable
         return $this->belongsTo(Dockable::class, 'docked_at');
     }
 
-    public function cargo()
+    public function storables()
     {
-        return $this->belongsToMany(Commodity::class, 'ship_cargo');
+        return $this->belongsToMany(Commodity::class, 'ship_cargo')->withPivot('quantity');
     }
 }

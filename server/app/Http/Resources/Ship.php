@@ -33,7 +33,8 @@ class Ship extends JsonResource
             'position_x' => $this->position_x,
             'position_y' => $this->position_y,
             'ship_type_id' => $this->ship_type_id,
-            'system_id' => $this->system_id
+            'system_id' => $this->system_id,
+            'storables' => $this->storables
         ];
     }
 }

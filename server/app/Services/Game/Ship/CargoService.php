@@ -28,6 +28,7 @@ class CargoService implements CargoServiceInterface
                 $quantity       -= $space_in_tank;
             } else {
                 $to_add_to_tank = $quantity;
+                $quantity       = 0;
             }
 
             $ship->fuel += $to_add_to_tank;

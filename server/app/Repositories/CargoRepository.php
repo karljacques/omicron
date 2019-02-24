@@ -11,6 +11,6 @@ class CargoRepository implements CargoRepositoryInterface
 
     public function addStorableToShip(Ship $ship, Storable $storable, $quantity)
     {
-        $ship->cargo()->attach($storable->id, ['quantity' => $quantity]);
+        $ship->storables()->attach($storable->id, ['quantity' => $quantity]);
     }
 }
