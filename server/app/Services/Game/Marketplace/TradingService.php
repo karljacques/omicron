@@ -42,7 +42,7 @@ class TradingService implements TradingServiceInterface
     {
         if ($quantity <= 0)
             throw new UserActionException('Quantity must be positive');
-        
+
         $ship      = $character->ship;
         $docked_at = $ship->dockedAt;
 

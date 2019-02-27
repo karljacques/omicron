@@ -8,6 +8,8 @@ namespace App;
  * @property mixed docked_at
  * @property mixed max_fuel
  * @property mixed dockedAt
+ * @property mixed cargo
+ * @property mixed max_cargo
  */
 class Ship extends Dockable
 {

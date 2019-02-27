@@ -5,6 +5,7 @@ namespace App\Repositories;
 
 use App\Ship;
 use App\Storable;
+use Illuminate\Support\Facades\DB;
 
 class CargoRepository implements CargoRepositoryInterface
 {
@@ -34,6 +35,18 @@ class CargoRepository implements CargoRepositoryInterface
         return $cargo->pivot->quantity;
     }
 
+    public function calculateShipCargoUsage($ship): int
+    {
+        $sql = "SELECT Sum(quantity * cargo_size) AS space_occupied 
+                    FROM   ship_cargo sc 
+                           INNER JOIN commodities c 
+                                   ON sc.commodity_id = c.id 
+                    WHERE  sc.ship_id = :ship_id";
+
+        $result = DB::select($sql, ['ship_id' => $ship->id]);
+        return $result[0]->space_occupied;
+    }
+
     protected function addStorableToShip(Ship $ship, Storable $storable, int $quantity)
     {
         $ship->storables()->attach($storable->id, ['quantity' => $quantity]);
@@ -48,4 +61,6 @@ class CargoRepository implements CargoRepositoryInterface
     {
         $ship->storables()->updateExistingPivot($storable->id, ['quantity' => $quantity]);
     }
+
+
 }
