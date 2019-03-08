@@ -10,6 +10,7 @@ namespace App;
  * @property mixed dockedAt
  * @property mixed cargo
  * @property mixed max_cargo
+ * @property mixed power
  */
 class Ship extends Dockable
 {

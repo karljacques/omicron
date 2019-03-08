@@ -3,9 +3,9 @@
 namespace App\Services\Game\Navigation;
 
 
+use App\Exceptions\UserActionException;
 use App\Position;
 use App\Repositories\SectorRepositoryInterface;
-use App\Sector;
 use App\Ship;
 use App\System;
 
@@ -18,6 +18,13 @@ class PositionService implements PositionServiceInterface
         $this->sector_repository = $sector_repository;
     }
 
+    /**
+     * @param Ship     $ship
+     * @param Position $delta
+     *
+     * @return bool
+     * @throws UserActionException
+     */
     public function move(Ship $ship, Position $delta): bool
     {
         if (!$this->isEligibleToMove($ship))
@@ -34,7 +41,10 @@ class PositionService implements PositionServiceInterface
         $move_cost = $current_sector->sector_type_id ?? 1;
 
         if ($ship->fuel < $move_cost)
-            return false;
+            throw new UserActionException('Not enough fuel');
+
+        if ($ship->power < 400)
+            throw new UserActionException('Not enough power');
 
         // Calculate new position
         $ship->position_x += $delta->getX();
@@ -44,6 +54,7 @@ class PositionService implements PositionServiceInterface
             return false;
 
         $ship->fuel -= $move_cost;
+        $ship->power -= 400;
         $ship->save();
 
         return true;

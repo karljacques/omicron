@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Game\Navigation;
 
 use App\Character;
+use App\Exceptions\UserActionException;
 use App\Http\Controllers\Controller;
 use App\Position;
 use App\Repositories\ShipRepository;
@@ -75,7 +76,11 @@ class PositionController extends Controller
 
         $delta = Position::fromArray($request->only('x', 'y'));;
 
-        $move_success = $position_service->move($ship, $delta);
+        try {
+            $move_success = $position_service->move($ship, $delta);
+        } catch (UserActionException $e) {
+            return response()->json($e->getJsonResponse());
+        }
 
         if ($move_success) {
             $ships_in_sector = $this->ship_repository->getShipsInSector($ship->getPosition());

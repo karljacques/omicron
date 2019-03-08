@@ -12,4 +12,8 @@ class UserActionException extends \Exception
         parent::__construct($message, $code, $previous);
     }
 
+    public function getJsonResponse() {
+        return ['success' => false, 'error' => $this->getMessage()];
+    }
+
 }
