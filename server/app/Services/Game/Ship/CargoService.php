@@ -37,8 +37,6 @@ class CargoService implements CargoServiceInterface
     public function addStorableToCargo(Ship $ship, Storable $storable, int $quantity): bool
     {
         // Does the ship have enough space?
-
-
         if ($storable->id === self::FUEL_ID) {
             $space_in_tank = $ship->max_fuel - $ship->fuel;
 
