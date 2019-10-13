@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 class TradingServiceTest extends TestCase
 {
     use Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
-    
+
     /** @var Mockery\Mock */
     protected $commodities_repository;
     /** @var Mockery\Mock */
@@ -43,12 +43,13 @@ class TradingServiceTest extends TestCase
 
     public function testBuy()
     {
-        $character = new Character();
-        $ship      = new Ship();
-        $dockable  = new Dockable();
 
         $price    = 100;
         $quantity = 200;
+
+        $character = new Character();
+        $ship      = new Ship();
+        $dockable  = new Dockable();
 
         $character->setRelation('ship', $ship);
         $ship->setRelation('dockedAt', $dockable);
@@ -81,6 +82,36 @@ class TradingServiceTest extends TestCase
 
     public function testSell()
     {
+        $price    = 100;
+        $quantity = 50;
+
+        $character = new Character();
+        $ship      = new Ship();
+        $dockable  = new Dockable();
+
+        $character->setRelation('ship', $ship);
+        $ship->setRelation('dockedAt', $dockable);
+
+        $commodity          = new Commodity();
+        $dockable_commodity = new DockableCommodity();
+
+        $dockable_commodity->buy = $price;
+
+        $this->commodities_repository->shouldReceive('getCommodityBoughtAtDockable')
+                                     ->once()
+                                     ->with($dockable, $commodity)
+                                     ->andReturn($dockable_commodity);
+
+        $this->cargo_service->shouldReceive('removeStorableFromCargo')
+                            ->once()
+                            ->with($ship, $commodity, $quantity)
+                            ->andReturn(true);
+
+        $this->finance_service->shouldReceive('credit')
+                              ->once()
+                              ->with($character, $price * $quantity);
+
+        $this->trading_service->sell($character, $commodity, $quantity, $price);
 
     }
 
