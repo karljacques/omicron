@@ -12,6 +12,8 @@ use App\Storable;
 class CargoService implements CargoServiceInterface
 {
     const FUEL_ID = 1;
+    const NOT_FUEL = 2;
+
     protected $cargo_repository;
 
     /**
