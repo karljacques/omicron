@@ -37,9 +37,7 @@ class CargoService implements CargoServiceInterface
     public function addStorableToCargo(Ship $ship, Storable $storable, int $quantity): bool
     {
         // Does the ship have enough space?
-        if ($ship->cargo + ($quantity * $storable->cargo_size) > $ship->max_cargo) {
-            throw new UserActionException('There is not enough space in the cargo hold');
-        }
+
 
         if ($storable->id === self::FUEL_ID) {
             $space_in_tank = $ship->max_fuel - $ship->fuel;
@@ -47,6 +45,10 @@ class CargoService implements CargoServiceInterface
             if ($quantity > $space_in_tank) {
                 $to_add_to_tank = $space_in_tank;
                 $quantity       -= $space_in_tank;
+
+                if ($ship->cargo + ($quantity * $storable->cargo_size) > $ship->max_cargo) {
+                    throw new UserActionException('There is not enough space in the cargo hold');
+                }
             } else {
                 $to_add_to_tank = $quantity;
                 $quantity       = 0;
@@ -54,6 +56,10 @@ class CargoService implements CargoServiceInterface
 
             $ship->fuel += $to_add_to_tank;
             $ship->save();
+        } else {
+            if ($ship->cargo + ($quantity * $storable->cargo_size) > $ship->max_cargo) {
+                throw new UserActionException('There is not enough space in the cargo hold');
+            }
         }
 
         if ($quantity > 0) {

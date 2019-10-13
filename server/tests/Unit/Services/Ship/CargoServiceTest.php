@@ -60,4 +60,30 @@ class CargoServiceTest extends TestCase
 
         $this->assertEquals($quantity * $storable->cargo_size, $ship->cargo);
     }
+
+    public function testAddingFuelNotEnoughRoomInHold()
+    {
+        $ship = Mockery::mock(Ship::class)->makePartial();
+        $ship->shouldReceive('save')->atLeast()->once();
+
+        $ship->cargo     = 100;
+        $ship->max_cargo = 100;
+        $ship->max_fuel  = 200;
+        $ship->fuel      = 50;
+
+        $this->cargo_repository->shouldReceive('calculateShipCargoUsage')
+                               ->with($ship)
+                               ->andReturn($ship->cargo);
+
+        $storable = new Storable();
+
+        $storable->id         = CargoService::FUEL_ID;
+        $storable->cargo_size = 2;
+
+        $this->cargo_service->addStorableToCargo($ship, $storable, 100);
+
+
+        $this->assertEquals($ship->fuel, 150);
+
+    }
 }
