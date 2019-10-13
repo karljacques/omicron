@@ -1,5 +1,5 @@
 ## About
-This is a game inspired by Omricon Beta and TDZK. It's a largely text-based MMO where you command a space ship in a universe composed of multiple 2D grids of sectors. It will feature trading, resourcing, and combat. 
+This is a game inspired by Omicron Beta and TDZK. It's a largely text-based MMO where you command a space ship in a universe composed of multiple 2D grids of sectors. It will feature trading, resourcing, and combat. 
 
 ## Setup
 
