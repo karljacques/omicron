@@ -85,12 +85,18 @@ class TradingServiceTest extends TestCase
     {
         $this->expectException(UserActionException::class);
 
+        $this->cargo_service->shouldNotReceive('addStorableToCargo');
+        $this->finance_service->shouldNotReceive('charge');
+
         $this->trading_service->buy(new Character(), new Commodity(), 0, 1);
     }
 
     public function testBuyMinusQuantity()
     {
         $this->expectException(UserActionException::class);
+
+        $this->cargo_service->shouldNotReceive('addStorableToCargo');
+        $this->finance_service->shouldNotReceive('charge');
 
         $this->trading_service->buy(new Character(), new Commodity(), -1, 1);
     }
@@ -104,6 +110,9 @@ class TradingServiceTest extends TestCase
         $ship->setRelation('dockedAt', null);
 
         $this->expectException(UserActionException::class);
+
+        $this->cargo_service->shouldNotReceive('addStorableToCargo');
+        $this->finance_service->shouldNotReceive('charge');
 
         $this->trading_service->buy($character, new Commodity(), 1, 1);
     }
@@ -125,6 +134,9 @@ class TradingServiceTest extends TestCase
                                      ->once()
                                      ->with($dockable, $commodity)
                                      ->andReturn(null);
+
+        $this->cargo_service->shouldNotReceive('addStorableToCargo');
+        $this->finance_service->shouldNotReceive('charge');
 
         $this->trading_service->buy($character, $commodity, 1, 1);
     }
@@ -150,6 +162,9 @@ class TradingServiceTest extends TestCase
                                      ->once()
                                      ->with($dockable, $commodity)
                                      ->andReturn($dockable_commodity);
+
+        $this->cargo_service->shouldNotReceive('addStorableToCargo');
+        $this->finance_service->shouldNotReceive('charge');
 
         $this->trading_service->buy($character, $commodity, 1, $price + 1);
     }
@@ -181,6 +196,9 @@ class TradingServiceTest extends TestCase
                               ->once()
                               ->with($character, $price * $quantity)
                               ->andReturn(false);
+
+        $this->cargo_service->shouldNotReceive('addStorableToCargo');
+        $this->finance_service->shouldNotReceive('charge');
 
         $this->trading_service->buy($character, $commodity, $quantity, $price);
     }
@@ -220,6 +238,121 @@ class TradingServiceTest extends TestCase
         $this->trading_service->sell($character, $commodity, $quantity, $price);
 
     }
+
+    public function testSellWithZeroQuantity()
+    {
+        $this->expectException(UserActionException::class);
+
+        $this->finance_service->shouldNotReceive('credit');
+
+        $this->trading_service->sell(new Character(), new Commodity(), 0, 1);
+    }
+
+    public function testSellWithMinusQuantity()
+    {
+        $this->expectException(UserActionException::class);
+
+        $this->finance_service->shouldNotReceive('credit');
+
+        $this->trading_service->sell(new Character(), new Commodity(), -1, 1);
+    }
+
+    public function testSellWhenNotDocked()
+    {
+        $character = new Character();
+        $ship      = new Ship();
+
+        $character->setRelation('ship', $ship);
+        $ship->setRelation('dockedAt', null);
+
+        $this->finance_service->shouldNotReceive('credit');
+
+        $this->expectException(UserActionException::class);
+        $this->trading_service->sell($character, new Commodity(), -1, 1);
+    }
+
+    public function testItemNotBoughtBuyDockable()
+    {
+        $character = new Character();
+        $ship      = new Ship();
+        $dockable  = new Dockable();
+
+        $character->setRelation('ship', $ship);
+        $ship->setRelation('dockedAt', $dockable);
+
+        $commodity = new Commodity();
+
+        $this->commodities_repository->shouldReceive('getCommodityBoughtAtDockable')
+                                     ->once()
+                                     ->with($dockable, $commodity)
+                                     ->andReturn(null);
+
+        $this->expectException(UserActionException::class);
+        $this->finance_service->shouldNotReceive('credit');
+
+        $this->trading_service->sell($character, $commodity, 1, 1);
+    }
+
+    public function testSellPriceMismatchBetweenClientAndServer()
+    {
+        $price = 100;
+
+        $character = new Character();
+        $ship      = new Ship();
+        $dockable  = new Dockable();
+
+        $character->setRelation('ship', $ship);
+        $ship->setRelation('dockedAt', $dockable);
+
+        $commodity               = new Commodity();
+        $dockable_commodity      = new DockableCommodity();
+        $dockable_commodity->buy = $price;
+
+        $this->expectException(UserActionException::class);
+
+        $this->commodities_repository->shouldReceive('getCommodityBoughtAtDockable')
+                                     ->once()
+                                     ->with($dockable, $commodity)
+                                     ->andReturn($dockable_commodity);
+
+        $this->finance_service->shouldNotReceive('credit');
+
+        $this->trading_service->sell($character, $commodity, 1, $price + 1);
+    }
+
+    public function testSellUserDoesNotOwnCargo()
+    {
+        $price    = 100;
+        $quantity = 50;
+
+        $character = new Character();
+        $ship      = new Ship();
+        $dockable  = new Dockable();
+
+        $character->setRelation('ship', $ship);
+        $ship->setRelation('dockedAt', $dockable);
+
+        $commodity               = new Commodity();
+        $dockable_commodity      = new DockableCommodity();
+        $dockable_commodity->buy = $price;
+
+        $this->expectException(UserActionException::class);
+
+        $this->commodities_repository->shouldReceive('getCommodityBoughtAtDockable')
+                                     ->once()
+                                     ->with($dockable, $commodity)
+                                     ->andReturn($dockable_commodity);
+
+        $this->cargo_service->shouldReceive('removeStorableFromCargo')
+                            ->once()
+                            ->with($ship, $commodity, $quantity)
+                            ->andReturn(false);
+
+        $this->finance_service->shouldNotReceive('credit');
+
+        $this->trading_service->sell($character, $commodity, $quantity, $price);
+    }
+
 
     public function tearDown()
     {
