@@ -6,6 +6,7 @@ use App\Character;
 use App\Commodity;
 use App\Dockable;
 use App\DockableCommodity;
+use App\Exceptions\UserActionException;
 use App\Repositories\CommoditiesRepositoryInterface;
 use App\Services\Game\Character\FinanceServiceInterface;
 use App\Services\Game\Marketplace\TradingService;
@@ -79,6 +80,111 @@ class TradingServiceTest extends TestCase
 
         $this->trading_service->buy($character, $commodity, $quantity, $price);
     }
+
+    public function testBuyZeroQuantity()
+    {
+        $this->expectException(UserActionException::class);
+
+        $this->trading_service->buy(new Character(), new Commodity(), 0, 1);
+    }
+
+    public function testBuyMinusQuantity()
+    {
+        $this->expectException(UserActionException::class);
+
+        $this->trading_service->buy(new Character(), new Commodity(), -1, 1);
+    }
+
+    public function testBuyWhenNotDocked()
+    {
+        $character = new Character();
+        $ship      = new Ship();
+
+        $character->setRelation('ship', $ship);
+        $ship->setRelation('dockedAt', null);
+
+        $this->expectException(UserActionException::class);
+
+        $this->trading_service->buy($character, new Commodity(), 1, 1);
+    }
+
+    public function testBuyingItemNotSoldAtDockable()
+    {
+        $character = new Character();
+        $ship      = new Ship();
+        $dockable  = new Dockable();
+
+        $character->setRelation('ship', $ship);
+        $ship->setRelation('dockedAt', $dockable);
+
+        $commodity = new Commodity();
+
+        $this->expectException(UserActionException::class);
+
+        $this->commodities_repository->shouldReceive('getCommoditySoldAtDockable')
+                                     ->once()
+                                     ->with($dockable, $commodity)
+                                     ->andReturn(null);
+
+        $this->trading_service->buy($character, $commodity, 1, 1);
+    }
+
+    public function testBuyPriceMismatchBetweenClientAndServer()
+    {
+        $price = 100;
+
+        $character = new Character();
+        $ship      = new Ship();
+        $dockable  = new Dockable();
+
+        $character->setRelation('ship', $ship);
+        $ship->setRelation('dockedAt', $dockable);
+
+        $commodity                = new Commodity();
+        $dockable_commodity       = new DockableCommodity();
+        $dockable_commodity->sell = $price;
+
+        $this->expectException(UserActionException::class);
+
+        $this->commodities_repository->shouldReceive('getCommoditySoldAtDockable')
+                                     ->once()
+                                     ->with($dockable, $commodity)
+                                     ->andReturn($dockable_commodity);
+
+        $this->trading_service->buy($character, $commodity, 1, $price + 1);
+    }
+
+    public function testCharacterCannotAffordToBuy()
+    {
+        $price    = 100;
+        $quantity = 50;
+
+        $character = new Character();
+        $ship      = new Ship();
+        $dockable  = new Dockable();
+
+        $character->setRelation('ship', $ship);
+        $ship->setRelation('dockedAt', $dockable);
+
+        $commodity                = new Commodity();
+        $dockable_commodity       = new DockableCommodity();
+        $dockable_commodity->sell = $price;
+
+        $this->expectException(UserActionException::class);
+
+        $this->commodities_repository->shouldReceive('getCommoditySoldAtDockable')
+                                     ->once()
+                                     ->with($dockable, $commodity)
+                                     ->andReturn($dockable_commodity);
+
+        $this->finance_service->shouldReceive('canAfford')
+                              ->once()
+                              ->with($character, $price * $quantity)
+                              ->andReturn(false);
+
+        $this->trading_service->buy($character, $commodity, $quantity, $price);
+    }
+
 
     public function testSell()
     {
